@@ -1,10 +1,10 @@
-package com.sensor.sys.controller;
+package com.sensor.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sensor.common.Constant;
 import com.sensor.common.Result;
-import com.sensor.sys.entity.User;
-import com.sensor.sys.service.UserService;
+import com.sensor.entity.User;
+import com.sensor.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

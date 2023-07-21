@@ -1,7 +1,7 @@
 package com.sensor;
 
-import com.sensor.sys.entity.User;
-import com.sensor.sys.mapper.UserMapper;
+import com.sensor.entity.User;
+import com.sensor.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

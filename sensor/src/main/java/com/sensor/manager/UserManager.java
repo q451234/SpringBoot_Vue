@@ -1,9 +1,9 @@
-package com.sensor.sys.Manager;
+package com.sensor.manager;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sensor.sys.entity.User;
-import com.sensor.sys.mapper.UserMapper;
+import com.sensor.mapper.UserMapper;
+import com.sensor.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.context.annotation.Configuration;

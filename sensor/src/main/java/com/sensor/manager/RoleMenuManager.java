@@ -1,9 +1,8 @@
-package com.sensor.sys.Manager;
+package com.sensor.manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.sensor.sys.entity.RoleMenu;
-import com.sensor.sys.mapper.RoleMapper;
-import com.sensor.sys.mapper.RoleMenuMapper;
+import com.sensor.entity.RoleMenu;
+import com.sensor.mapper.RoleMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;

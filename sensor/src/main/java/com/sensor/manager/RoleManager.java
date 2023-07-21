@@ -1,9 +1,9 @@
-package com.sensor.sys.Manager;
+package com.sensor.manager;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sensor.sys.entity.Role;
-import com.sensor.sys.mapper.RoleMapper;
+import com.sensor.entity.Role;
+import com.sensor.mapper.RoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;

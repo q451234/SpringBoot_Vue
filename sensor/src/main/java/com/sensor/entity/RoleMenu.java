@@ -1,4 +1,4 @@
-package com.sensor.sys.entity;
+package com.sensor.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,19 +10,18 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 
-@TableName("user_role")
+@TableName("role_menu")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole implements Serializable {
+public class RoleMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer userId;
-
     private Integer roleId;
 
+    private Integer menuId;
 }

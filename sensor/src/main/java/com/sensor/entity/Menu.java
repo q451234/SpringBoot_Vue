@@ -1,4 +1,4 @@
-package com.sensor.sys.entity;
+package com.sensor.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

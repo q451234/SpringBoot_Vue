@@ -1,4 +1,4 @@
-package com.sensor.sys.service;
+package com.sensor.service;
 
 import org.springframework.stereotype.Service;
 

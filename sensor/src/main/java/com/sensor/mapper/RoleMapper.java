@@ -1,6 +1,6 @@
-package com.sensor.sys.mapper;
+package com.sensor.mapper;
 
-import com.sensor.sys.entity.Role;
+import com.sensor.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,11 +1,8 @@
-package com.sensor.sys.mapper;
+package com.sensor.mapper;
 
-import com.sensor.sys.entity.User;
+import com.sensor.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 
 @Mapper

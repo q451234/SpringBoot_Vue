@@ -1,7 +1,7 @@
-package com.sensor.sys.service;
+package com.sensor.service;
 
-import com.sensor.sys.Manager.MenuManger;
-import com.sensor.sys.entity.Menu;
+import com.sensor.manager.MenuManger;
+import com.sensor.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

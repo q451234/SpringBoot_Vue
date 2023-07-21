@@ -1,4 +1,4 @@
-package com.sensor.sys.entity;
+package com.sensor.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,23 +9,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-@TableName("role")
+
+@TableName("user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "role_id", type = IdType.AUTO)
-    private Integer roleId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-    private String roleName;
+    private String username;
 
-    private String roleDesc;
+    private String password;
+
+    private String email;
+
+    private String phone;
+
+    private Integer status;
+
+    private String avatar;
+
+    private Integer deleted;
 
     @TableField(exist = false)
-    private List<Integer> menuIdList;
+    private List<Integer> roleIdList = new ArrayList<>();
 }

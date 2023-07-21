@@ -1,8 +1,8 @@
-package com.sensor.sys.Manager;
+package com.sensor.manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.sensor.sys.entity.UserRole;
-import com.sensor.sys.mapper.UserRoleMapper;
+import com.sensor.entity.UserRole;
+import com.sensor.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;

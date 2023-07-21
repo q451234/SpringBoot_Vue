@@ -1,8 +1,8 @@
-package com.sensor.sys.Manager;
+package com.sensor.manager;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.sensor.sys.entity.Menu;
-import com.sensor.sys.mapper.MenuMapper;
+import com.sensor.entity.Menu;
+import com.sensor.mapper.MenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 

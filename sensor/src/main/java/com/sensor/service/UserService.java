@@ -1,13 +1,13 @@
-package com.sensor.sys.service;
+package com.sensor.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sensor.sys.Manager.UserManager;
-import com.sensor.sys.Manager.UserRoleManager;
-import com.sensor.sys.entity.Menu;
-import com.sensor.sys.entity.User;
-import com.sensor.sys.entity.UserRole;
+import com.sensor.manager.UserManager;
+import com.sensor.manager.UserRoleManager;
+import com.sensor.entity.Menu;
+import com.sensor.entity.User;
+import com.sensor.entity.UserRole;
 import com.sensor.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
