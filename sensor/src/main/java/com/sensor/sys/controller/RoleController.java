@@ -52,7 +52,7 @@ public class RoleController {
         try{
             roleService.addRole(role);
         }catch (Exception SQLIntegrityConstraintViolationException){
-            log.info("角色名已存在");
+            log.info("角色名已存在", role);
             return Result.fail(Constant.FAIL_CODE_3, "角色名已存在");
         }
 

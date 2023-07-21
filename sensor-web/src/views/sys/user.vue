@@ -36,10 +36,10 @@
     <!-- 结果列表 -->
     <el-card>
       <el-table :data="userList" stripe style="width: 100%">
-        <el-table-column label="#" width="80" type="index">
+        <el-table-column label="ID" width="180" type="index">
         </el-table-column>
-        <el-table-column prop="id" label="用户ID" width="180">
-        </el-table-column>
+        <!-- <el-table-column prop="id" label="用户ID" width="180">
+        </el-table-column> -->
         <el-table-column prop="username" label="用户名" width="180">
         </el-table-column>
         <el-table-column prop="phone" label="电话" width="180">
@@ -115,6 +115,9 @@
             :max="1">
             <el-checkbox v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-checkbox>
           </el-checkbox-group>
+          <!-- <el-radio-group v-model="userForm.roleIdList">
+            <el-radio v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-radio>
+          </el-radio-group> -->
         </el-form-item>
         <el-form-item
           label="电子邮件"
@@ -277,7 +280,6 @@ export default {
     getAllRole() {
       roleApi.getAllRole().then((response) => {
         this.roleList = response.data;
-        console.log(this.roleList)
       });
     },
   },

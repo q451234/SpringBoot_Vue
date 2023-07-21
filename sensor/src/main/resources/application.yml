@@ -5,7 +5,7 @@ spring:
   datasource:
     username: root
     password: q451234@
-    url: jdbc:mysql:///xdb
+    url: jdbc:mysql:///sensor
 
 logging:
   config: classpath:logback-spring.xml
