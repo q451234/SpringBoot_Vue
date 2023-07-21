@@ -16,7 +16,7 @@
               个人信息
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="http://www.baidu.com">
+          <a target="_blank" href="http://www.crdc.com">
             <el-dropdown-item>公司主页</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">

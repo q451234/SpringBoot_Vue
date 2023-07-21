@@ -32,10 +32,10 @@
     <!-- 结果列表 -->
     <el-card>
       <el-table :data="roleList" stripe style="width: 100%">
-        <el-table-column label="#" width="80" type="index">
+        <el-table-column label="ID" width="180" type="index">
         </el-table-column>
-        <el-table-column prop="roleId" label="角色ID" width="200">
-        </el-table-column>
+        <!-- <el-table-column prop="roleId" label="角色ID" width="200">
+        </el-table-column> -->
         <el-table-column prop="roleName" label="角色名称" width="260">
         </el-table-column>
         <el-table-column prop="roleDesc" label="角色描述"> </el-table-column>
