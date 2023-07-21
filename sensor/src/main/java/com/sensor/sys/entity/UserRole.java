@@ -9,14 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
+
 @TableName("x_user_role")
 @Data
 @AllArgsConstructor

@@ -11,14 +11,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
 @TableName("x_role")
 @Data
 @AllArgsConstructor

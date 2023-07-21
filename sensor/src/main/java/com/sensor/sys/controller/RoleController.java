@@ -1,41 +1,29 @@
 package com.sensor.sys.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sensor.common.Result;
 import com.sensor.sys.entity.Role;
-import com.sensor.sys.service.IRoleService;
+import com.sensor.sys.service.RoleService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
 @Api(tags = "角色相关接口列表")
 @Slf4j
 @RestController
 @RequestMapping("/role")
 public class RoleController {
     @Autowired
-    private IRoleService roleService;
-
+    private RoleService roleService;
 
     @GetMapping("/all")
     public Result<List<Role>> getAllRole(){
-        List<Role> roleList = roleService.list();
+        List<Role> roleList = roleService.getALlRole();
         return Result.success(roleList,"查询成功");
     }
 
@@ -44,12 +32,7 @@ public class RoleController {
                                                   @RequestParam(value = "pageNo") Long pageNo,
                                                   @RequestParam(value = "pageSize") Long pageSize){
 
-        LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(StringUtils.hasLength(roleName),Role::getRoleName,roleName);
-        wrapper.orderByDesc(Role::getRoleId);
-
-        Page<Role> page = new Page<>(pageNo,pageSize);
-        roleService.page(page,wrapper);
+        Page<Role> page = roleService.getPage(roleName, pageNo, pageSize);
 
         Map<String,Object> data = new HashMap<>();
         data.put("total",page.getTotal());
@@ -79,6 +62,7 @@ public class RoleController {
     @GetMapping("/{id}")
     public Result<Role> getRoleById(@PathVariable("id") Integer id){
         Role role = roleService.getRoleById(id);
+        log.info(role.toString());
         return Result.success(role);
     }
 

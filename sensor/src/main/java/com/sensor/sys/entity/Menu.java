@@ -14,14 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
 @TableName("x_menu")
 @Data
 @AllArgsConstructor

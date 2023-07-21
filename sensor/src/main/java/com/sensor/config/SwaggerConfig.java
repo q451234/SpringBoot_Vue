@@ -18,7 +18,7 @@ import java.util.List;
 @Configuration
 @EnableOpenApi
 @EnableWebMvc
-public class MySwaggerConfig {
+public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)

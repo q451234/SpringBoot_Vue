@@ -12,14 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
+
 @TableName("x_user")
 @Data
 @AllArgsConstructor

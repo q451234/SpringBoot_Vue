@@ -2,15 +2,19 @@ package com.sensor.sys.mapper;
 
 import com.sensor.sys.entity.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
+import java.util.List;
+
+
+@Mapper
 public interface UserRoleMapper extends BaseMapper<UserRole> {
-
+    @Select({
+            "SELECT b.role_name " +
+                    "FROM x_user_role a, x_role b " +
+                    "WHERE a.role_id = b.role_id " +
+                    "AND a.user_id = #{userId}"
+    })
+    public List<String> getRoleNameByUserId(Integer userId);
 }

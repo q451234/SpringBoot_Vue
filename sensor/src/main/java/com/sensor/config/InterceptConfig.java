@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MyInterceptConfig implements WebMvcConfigurer {
+public class InterceptConfig implements WebMvcConfigurer {
     @Autowired
     private JwtValidateInterceptor jwtValidateInterceptor;
 

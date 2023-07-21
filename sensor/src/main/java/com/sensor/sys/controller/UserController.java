@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sensor.common.Result;
 import com.sensor.sys.entity.User;
-import com.sensor.sys.service.IUserService;
+import com.sensor.sys.mapper.UserMapper;
+import com.sensor.sys.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
@@ -18,29 +19,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author laocai
- * @since 2023-02-07
- */
 @Api(tags = "用户相关接口列表")
 @RestController
 @RequestMapping("/user")
 @Slf4j
-// @CrossOrigin   跨域处理
 public class UserController {
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/all")
     public Result<List<User>> getAllUser(){
-        List<User> list = userService.list();
+        List<User> list = userService.getALlUser();
         return Result.success(list,"查询成功");
     }
 
@@ -79,13 +71,7 @@ public class UserController {
                                               @RequestParam(value = "pageNo") Long pageNo,
                                               @RequestParam(value = "pageSize") Long pageSize){
 
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(StringUtils.hasLength(username),User::getUsername,username);
-        wrapper.eq(StringUtils.hasLength(phone),User::getPhone,phone);
-        wrapper.orderByDesc(User::getId);
-
-        Page<User> page = new Page<>(pageNo,pageSize);
-        userService.page(page,wrapper);
+        Page<User> page = userService.getPage(username, phone, pageNo, pageSize);
 
         Map<String,Object> data = new HashMap<>();
         data.put("total",page.getTotal());
