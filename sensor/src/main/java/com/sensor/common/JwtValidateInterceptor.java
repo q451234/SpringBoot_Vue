@@ -31,7 +31,7 @@ public class JwtValidateInterceptor implements HandlerInterceptor {
         }
         log.debug(request.getRequestURI() + " 禁止访问...");
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(JSON.toJSONString(Result.fail(20003,"登录信息无效，请重新登录")));
+        response.getWriter().write(JSON.toJSONString(Result.fail(Constant.FAIL_CODE_3,"登录信息无效，请重新登录")));
         return false;
     }
 }

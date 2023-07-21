@@ -112,7 +112,7 @@
           <el-checkbox-group 
             style="width: 85%"
             v-model="userForm.roleIdList"
-            :max="2">
+            :max="1">
             <el-checkbox v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>

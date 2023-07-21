@@ -1,6 +1,7 @@
 package com.sensor.sys.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.sys.entity.Role;
 import com.sensor.sys.service.RoleService;
@@ -47,7 +48,7 @@ public class RoleController {
         try{
             roleService.addRole(role);
         }catch (Exception SQLIntegrityConstraintViolationException){
-            return Result.fail(20003, "角色名已存在");
+            return Result.fail(Constant.FAIL_CODE_3, "角色名已存在");
         }
 
         return Result.success("新增角色成功");

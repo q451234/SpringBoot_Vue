@@ -1,18 +1,15 @@
 package com.sensor.sys.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.sys.entity.User;
-import com.sensor.sys.mapper.UserMapper;
 import com.sensor.sys.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -42,11 +39,11 @@ public class UserController {
         Map<String,Object> data = userService.login(user);
         if(data != null){
             if((int)data.get("status") == 0){
-                return Result.fail(20001, "用户被禁止登陆");
+                return Result.fail(Constant.FAIL_CODE_1, "用户被禁止登陆");
             }
             return Result.success(data);
         }
-        return Result.fail(20002,"用户名或密码错误");
+        return Result.fail(Constant.FAIL_CODE_2,"用户名或密码错误");
     }
 
     @GetMapping("/info")
@@ -56,7 +53,7 @@ public class UserController {
         if(data != null){
             return Result.success(data);
         }
-        return Result.fail(20003,"登录信息无效，请重新登录");
+        return Result.fail(Constant.FAIL_CODE_3,"登录信息无效，请重新登录");
     }
 
     @PostMapping("/logout")
@@ -87,7 +84,7 @@ public class UserController {
         try{
             userService.addUser(user);
         }catch (Exception SQLIntegrityConstraintViolationException){
-            return Result.fail(20003, "用户名已存在");
+            return Result.fail(Constant.FAIL_CODE_3, "用户名已存在");
         }
 
         return Result.success("新增用户成功");
