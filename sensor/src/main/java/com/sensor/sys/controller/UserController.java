@@ -27,6 +27,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @ApiOperation("获取所有用户信息")
     @GetMapping("/all")
     public Result<List<User>> getAllUser(){
         List<User> list = userService.getALlUser();
@@ -46,6 +47,7 @@ public class UserController {
         return Result.fail(Constant.FAIL_CODE_2,"用户名或密码错误");
     }
 
+    @ApiOperation("获取用户信息")
     @GetMapping("/info")
     public Result<Map<String,Object>> getUserInfo(@RequestParam("token") String token){
         // 根据token获取用户信息，redis
@@ -56,12 +58,14 @@ public class UserController {
         return Result.fail(Constant.FAIL_CODE_3,"登录信息无效，请重新登录");
     }
 
+    @ApiOperation("退出登录")
     @PostMapping("/logout")
     public Result<?> logout(@RequestHeader("X-Token") String token){
         userService.logout(token);
         return Result.success();
     }
 
+    @ApiOperation("用户搜索")
     @GetMapping("/list")
     public Result<Map<String,Object>> getUserList(@RequestParam(value = "username",required = false) String username,
                                               @RequestParam(value = "phone",required = false) String phone,
@@ -78,6 +82,7 @@ public class UserController {
 
     }
 
+    @ApiOperation("添加用户")
     @PostMapping
     public Result<?> addUser(@RequestBody User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -90,6 +95,7 @@ public class UserController {
         return Result.success("新增用户成功");
     }
 
+    @ApiOperation("修改用户信息")
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
         user.setPassword(null);
@@ -97,12 +103,14 @@ public class UserController {
         return Result.success("修改用户成功");
     }
 
+    @ApiOperation("查询用户")
     @GetMapping("/{id}")
     public Result<User> getUserById(@PathVariable("id") Integer id){
         User user = userService.getUserById(id);
         return Result.success(user);
     }
 
+    @ApiOperation("删除用户")
     @DeleteMapping("/{id}")
     public Result<User> deleteUserById(@PathVariable("id") Integer id){
         userService.deleteUserById(id);

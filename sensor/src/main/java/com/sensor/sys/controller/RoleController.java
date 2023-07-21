@@ -6,6 +6,7 @@ import com.sensor.common.Result;
 import com.sensor.sys.entity.Role;
 import com.sensor.sys.service.RoleService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,14 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    @ApiOperation("获取所有角色信息")
     @GetMapping("/all")
     public Result<List<Role>> getAllRole(){
         List<Role> roleList = roleService.getALlRole();
         return Result.success(roleList,"查询成功");
     }
 
+    @ApiOperation("搜索角色")
     @GetMapping("/list")
     public Result<Map<String,Object>> getRoleList(@RequestParam(value = "roleName",required = false) String roleName,
                                                   @RequestParam(value = "pageNo") Long pageNo,
@@ -43,6 +46,7 @@ public class RoleController {
 
     }
 
+    @ApiOperation("添加角色")
     @PostMapping
     public Result<?> addRole(@RequestBody Role role){
         try{
@@ -54,12 +58,14 @@ public class RoleController {
         return Result.success("新增角色成功");
     }
 
+    @ApiOperation("更新角色")
     @PutMapping
     public Result<?> updateRole(@RequestBody Role role){
         roleService.updateRole(role);
         return Result.success("修改用户成功");
     }
 
+    @ApiOperation("查询角色")
     @GetMapping("/{id}")
     public Result<Role> getRoleById(@PathVariable("id") Integer id){
         Role role = roleService.getRoleById(id);
@@ -67,6 +73,7 @@ public class RoleController {
         return Result.success(role);
     }
 
+    @ApiOperation("删除角色")
     @DeleteMapping("/{id}")
     public Result<Role> deleteRoleById(@PathVariable("id") Integer id){
         roleService.deleteRoleById(id);
