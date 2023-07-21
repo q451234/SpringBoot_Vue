@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserRoleMapper extends BaseMapper<UserRole> {
     @Select({
             "SELECT b.role_name " +
-                    "FROM x_user_role a, x_role b " +
+                    "FROM user_role a, role b " +
                     "WHERE a.role_id = b.role_id " +
                     "AND a.user_id = #{userId}"
     })

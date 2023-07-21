@@ -13,7 +13,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
     @Select({
         "SELECT a.* FROM " +
-        "x_menu a, x_role_menu b, x_user_role c " +
+        "menu a, role_menu b, user_role c " +
         "WHERE a.menu_id = b.menu_id " +
         "AND b.role_id = c.role_id " +
         "AND a.parent_id = #{pid} " +

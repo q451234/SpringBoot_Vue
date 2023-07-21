@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-@TableName("x_role")
+@TableName("role")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

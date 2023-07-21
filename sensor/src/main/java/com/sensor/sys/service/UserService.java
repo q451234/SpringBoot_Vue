@@ -65,7 +65,7 @@ public class UserService{
             loginUser = jwtUtil.parseToken(token, User.class);
         }catch (Exception e){
             e.printStackTrace();
-            log.debug("JWT解析失败");
+            log.info("JWT解析失败");
         }
 
         if(loginUser != null){

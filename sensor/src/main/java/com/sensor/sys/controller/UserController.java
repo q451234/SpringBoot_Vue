@@ -40,10 +40,12 @@ public class UserController {
         Map<String,Object> data = userService.login(user);
         if(data != null){
             if((int)data.get("status") == 0){
+                log.info("用户被禁止登陆");
                 return Result.fail(Constant.FAIL_CODE_1, "用户被禁止登陆");
             }
             return Result.success(data);
         }
+        log.info("用户名或密码错误");
         return Result.fail(Constant.FAIL_CODE_2,"用户名或密码错误");
     }
 
@@ -55,6 +57,7 @@ public class UserController {
         if(data != null){
             return Result.success(data);
         }
+        log.info("登录信息无效，请重新登录");
         return Result.fail(Constant.FAIL_CODE_3,"登录信息无效，请重新登录");
     }
 
@@ -89,6 +92,7 @@ public class UserController {
         try{
             userService.addUser(user);
         }catch (Exception SQLIntegrityConstraintViolationException){
+            log.info("用户名已存在");
             return Result.fail(Constant.FAIL_CODE_3, "用户名已存在");
         }
 

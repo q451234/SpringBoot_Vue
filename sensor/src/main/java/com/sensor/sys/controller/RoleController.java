@@ -52,6 +52,7 @@ public class RoleController {
         try{
             roleService.addRole(role);
         }catch (Exception SQLIntegrityConstraintViolationException){
+            log.info("角色名已存在");
             return Result.fail(Constant.FAIL_CODE_3, "角色名已存在");
         }
 
@@ -69,7 +70,6 @@ public class RoleController {
     @GetMapping("/{id}")
     public Result<Role> getRoleById(@PathVariable("id") Integer id){
         Role role = roleService.getRoleById(id);
-        log.info(role.toString());
         return Result.success(role);
     }
 

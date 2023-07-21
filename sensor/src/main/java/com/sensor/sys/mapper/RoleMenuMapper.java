@@ -13,7 +13,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
 
     @Select({
         "select a.menu_id " +
-        "from x_role_menu a, x_menu b " +
+        "from role_menu a, menu b " +
         "where a.menu_id = b.menu_id " +
         "and b.is_leaf = 'Y' " +
         "and a.role_id = #{roleId}"

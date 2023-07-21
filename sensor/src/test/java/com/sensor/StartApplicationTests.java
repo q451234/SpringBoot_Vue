@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @SpringBootTest
-class XAdminApplicationTests {
+class StartApplicationTests {
 
     @Resource
     private UserMapper userMapper;

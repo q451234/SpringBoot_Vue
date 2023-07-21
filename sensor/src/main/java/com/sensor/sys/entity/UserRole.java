@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 
-@TableName("x_user_role")
+@TableName("user_role")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
