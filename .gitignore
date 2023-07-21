@@ -1,0 +1,4 @@
+x-admin\target
+x-admin\.idea
+x-admin-web\node_modules
+.DS_Store
