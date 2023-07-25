@@ -4,14 +4,17 @@ package com.sensor.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.influxdb.annotations.Column;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class SensorData {
 
     @JsonProperty("project_id")
@@ -79,17 +82,21 @@ public class SensorData {
     private Instant time;
 
     @Column
-    private Double ad;
+    @Builder.Default
+    private Double ad = 0.0;
 
     @JsonProperty("m_data")
     @Column
-    private Double mData;
+    @Builder.Default
+    private Double mData = 0.0;
 
     @Column
-    private Double calculatedata;
+    @Builder.Default
+    private Double calculatedata = 0.0;
 
     @Column
-    private Double substand;
+    @Builder.Default
+    private Double substand = 0.0;
 
     @Column
     private Double temperature;

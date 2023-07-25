@@ -12,18 +12,18 @@ import java.util.List;
 public interface FetchMapper extends BaseMapper<Menu> {
 
     @Select({
-            "select a.*, b.box_id, b.box_name, " +
-                    "c.cd_id, c.cd_name, c.cgqlx_id, c.cgqlx_name, c.hole_id, " +
-                    "d.l_max, d.l_min, d.unit, d.points, d.data_name, d.calculatedata_name, d.substand_name, " +
-                    "e.clsj, e.ad, e.m_data, e.calculatedata, e.substand, e.temperature, e.m_mode, e.chuanganqileixing from t_project a " +
-                    "left join t_box b " +
-                    "on a.project_id = b.project_id " +
+            "select e.*, b.box_name, a.project_name, " +
+                    "c.project_id, c.box_id, c.cgqlx_id, c.cgqlx_name, c.hole_id, " +
+                    "d.l_max, d.l_min, d.unit, d.points, d.data_name, d.calculatedata_name, d.substand_name " +
+                    "from t_record e " +
                     "left join t_cd c " +
-                    "on b.project_id = c.project_id and b.box_id = c.box_id " +
+                    "on e.cd_id = c.cd_id " +
                     "left join t_cgqlx d " +
-                    "on a.project_id = d.project_id and c.cgqlx_id = d.cgqlx_id " +
-                    "left join t_record e " +
-                    "on c.cd_id = e.cd_id limit 10"
+                    "on c.cgqlx_id = d.cgqlx_id " +
+                    "left join t_box b " +
+                    "on c.box_id = b.box_id " +
+                    "left join t_project a " +
+                    "on c.project_id = a.project_id"
     })
     public List<SensorData> fetchSensorList();
 }

@@ -2,12 +2,13 @@ package com.sensor.controller;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
-import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
+import com.sensor.common.Constant;
 import com.sensor.common.Result;
-import com.sensor.entity.Menu;
 import com.sensor.entity.SensorData;
 import com.sensor.mapper.FetchMapper;
+import com.sensor.util.PautaUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,24 +31,28 @@ public class FetchController {
     public Result<?> getAllMenu() throws ParseException {
         List<SensorData> sensorDataList = fetchMapper.fetchSensorList();
 
-        char[] token = "XIpevgESCHb5kcGhmefA0L9EM80dXYwnz3R_lbl7usxoYEyZ2OXf0tyUimaC8BR-w4nxBWaSqd2Y1aWldkpvIQ==".toCharArray();
-        String org = "CRDC";
-        String bucket = "sensor";
+        char[] token = Constant.INFLUXDB_TOKEN.toCharArray();
+        String org = Constant.INFLUXDB_ORG;
+        String bucket = "SensorData";
 
-        InfluxDBClient influxDBClient = InfluxDBClientFactory.create("http://localhost:8086", token, org, bucket);
+        InfluxDBClient influxDBClient = InfluxDBClientFactory.create(Constant.INFLUXDB_URL, token, org, bucket);
+
+        PautaUtil.removeException(sensorDataList);
 
         // Write data
-        WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
+        WriteApi writeApi = influxDBClient.makeWriteApi();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         for(SensorData sensorData: sensorDataList){
-            if(sensorData.getAd() != null){
-                Date date = dateFormat.parse(sensorData.getClsj());
-                sensorData.setTime(date.toInstant());
-                writeApi.writeMeasurement( WritePrecision.MS, sensorData);
-            }
+            Date date = dateFormat.parse(sensorData.getClsj());
+            sensorData.setTime(date.toInstant());
+            writeApi.writeMeasurement( WritePrecision.MS, sensorData);
         }
-        return Result.success(sensorDataList);
+
+        writeApi.flush();
+        writeApi.close();
+
+        return Result.success();
     }
 }
