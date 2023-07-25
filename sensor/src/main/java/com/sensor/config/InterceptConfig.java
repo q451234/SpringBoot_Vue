@@ -23,6 +23,7 @@ public class InterceptConfig implements WebMvcConfigurer {
                         "/error",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
-                        "/v3/**");
+                        "/v3/**",
+                        "/fetch");
     }
 }

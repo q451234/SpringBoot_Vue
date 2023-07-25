@@ -14,98 +14,90 @@ import java.time.Instant;
 @NoArgsConstructor
 public class SensorData {
 
-    @JsonProperty("项目ID")
+    @JsonProperty("project_id")
     private String projectId;
 
-    @JsonProperty("项目名称")
+    @JsonProperty("project_name")
     @Column(measurement = true)
     private String projectName;
 
-    @JsonProperty("采集仪ID")
+    @JsonProperty("box_id")
     @Column(tag = true)
     private String boxId;
 
-    @JsonProperty("采集仪名称")
+    @JsonProperty("box_name")
     @Column(tag = true)
     private String boxName;
 
-    @JsonProperty("测点ID")
+    @JsonProperty("cd_id")
     @Column(tag = true)
     private String cdId;
 
-    @JsonProperty("测点名称")
+    @JsonProperty("cd_name")
     @Column(tag = true)
     private String cdName;
 
-    @JsonProperty("传感器类型ID")
+    @JsonProperty("cgqlx_id")
     @Column(tag = true)
     private String cgqlxId;
 
-    @JsonProperty("传感器名称")
+    @JsonProperty("cgqlx_name")
     private String cgqlxName;
 
-    @JsonProperty("位置信息")
+    @JsonProperty("hole_id")
     @Column(tag = true)
     private String holeId;
 
-    @JsonProperty("正常数据上限")
+    @JsonProperty("l_max")
     @Column(tag = true)
     private String lMax;
 
-    @JsonProperty("正常数据下限")
+    @JsonProperty("l_min")
     @Column(tag = true)
     private String lMin;
 
-    @JsonProperty("单位")
     private String unit;
 
-    @JsonProperty("保留小数")
     @Column(tag = true)
     private String points;
 
-    @JsonProperty("一次计算量名称")
+    @JsonProperty("data_name")
     @Column(tag = true)
     private String dataName;
 
-    @JsonProperty("二次计算量名称")
+    @JsonProperty("calculatedata_name")
     @Column(tag = true)
     private String calculatedataName;
 
-    @JsonProperty("三次计算量名称")
+    @JsonProperty("substand_name")
     @Column(tag = true)
     private String substandName;
 
-    @JsonProperty("测量时间")
     private String clsj;
 
     @Column(timestamp = true)
     private Instant time;
 
-    @JsonProperty("AD值")
     @Column
     private Double ad;
 
-    @JsonProperty("测量值")
+    @JsonProperty("m_data")
     @Column
     private Double mData;
 
-    @JsonProperty("计算值")
     @Column
     private Double calculatedata;
 
-    @JsonProperty("变化量")
     @Column
     private Double substand;
 
-    @JsonProperty("温度")
     @Column
     private Double temperature;
 
-    @JsonProperty("采集类型")
+    @JsonProperty("m_mode")
     @Column(tag = true)
     private String mMode;
 
-    @JsonProperty("传感器类型")
     @Column(tag = true)
     private String chuanganqileixing;
 }
