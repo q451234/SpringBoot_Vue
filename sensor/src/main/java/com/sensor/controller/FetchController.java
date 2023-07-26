@@ -8,6 +8,7 @@ import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.entity.SensorData;
 import com.sensor.mapper.FetchMapper;
+import com.sensor.util.FluxUtil;
 import com.sensor.util.PautaUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,9 @@ public class FetchController {
     public Result<?> getAllMenu() throws ParseException {
         List<SensorData> sensorDataList = fetchMapper.fetchSensorList();
 
-        char[] token = Constant.INFLUXDB_TOKEN.toCharArray();
-        String org = Constant.INFLUXDB_ORG;
         String bucket = "SensorData";
 
-        InfluxDBClient influxDBClient = InfluxDBClientFactory.create(Constant.INFLUXDB_URL, token, org, bucket);
+        InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
 
         PautaUtil.removeException(sensorDataList);
 
