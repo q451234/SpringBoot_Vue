@@ -86,7 +86,7 @@
         >
           <el-input v-model="userForm.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item v-if="userForm.id == null || userForm.id == undefined"
+        <el-form-item
           label="登录密码"
           prop="password"
           :label-width="formLabelWidth"
@@ -115,9 +115,6 @@
             :max="1">
             <el-checkbox v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-checkbox>
           </el-checkbox-group>
-          <!-- <el-radio-group v-model="userForm.roleIdList">
-            <el-radio v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-radio>
-          </el-radio-group> -->
         </el-form-item>
         <el-form-item
           label="电子邮件"
@@ -138,6 +135,7 @@
 <script>
 import userApi from "@/api/userManage";
 import roleApi from "@/api/roleManage";
+import { title } from '@/settings';
 export default {
   data() {
     var checkEmail = (rule, value, callback) => {
@@ -150,19 +148,23 @@ export default {
       
     };
     var validatePassword = (rule, value, callback) => {
-      if (value !== '') {
-        if (value.length < 6) {
-          callback(new Error('请输入至少6位的密码'))
-          return false
-        } else if (
-          !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!*#$%&_=])[A-Za-z\d@!*#$%&_=]{8,18}$/.test(value)
-        ) {
-          callback(new Error('密码必须包含字母、数字和特殊字符(@!*#$%&_=)'))
-          return false
-        } else {
-          callback()
-        }
+      if(this.title == "新增用户"){
+        if (value !== '') {
+          if (value.length < 6) {
+            callback(new Error('请输入至少6位的密码'))
+            return false
+          } else if (
+            !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!*#$%&_=])[A-Za-z\d@!*#$%&_=]{8,18}$/.test(value)
+          ) {
+            callback(new Error('密码必须包含字母、数字和特殊字符(@!*#$%&_=)'))
+            return false
+          } else {
+            callback()
+          }
+        }        
       }
+      console.log(value)
+      callback()
     }
 
     return {
@@ -190,7 +192,7 @@ export default {
           },
         ],
         password: [
-          { required: true, message: "请输入登录初始密码", trigger: "blur" },
+          { required: false, message: "请输入登录初始密码", trigger: "blur" },
           { validator: validatePassword, trigger: "blur" },
         ],
         email: [
@@ -259,6 +261,7 @@ export default {
         // 根据id查询用户数据
         userApi.getUserById(id).then(response => {
           this.userForm = response.data;
+          this.userForm.password = null;
         });
       }
       this.dialogFormVisible = true;

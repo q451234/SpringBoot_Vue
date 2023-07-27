@@ -102,7 +102,9 @@ public class UserController {
     @ApiOperation("修改用户信息")
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
-        user.setPassword(null);
+        if(user.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userService.updateUser(user);
         return Result.success("修改用户成功");
     }
@@ -110,6 +112,9 @@ public class UserController {
     @ApiOperation("个人修改用户信息")
     @PostMapping("/personal")
     public Result<?> updateUserPersonal(@RequestBody User user){
+        if(user.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userService.updateUserPersonal(user);
         return Result.success("修改信息成功");
     }
