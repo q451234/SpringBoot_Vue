@@ -72,6 +72,9 @@ public class UserService{
             Map<String, Object> data = new HashMap<>();
             data.put("name",loginUser.getUsername());
             data.put("avatar", loginUser.getAvatar());
+            data.put("phone", loginUser.getPhone());
+            data.put("email", loginUser.getEmail());
+            data.put("id", loginUser.getId());
 
             // 角色
             List<String> roleList = userRoleManager.getRoleNameListByUserId(loginUser.getId());
@@ -126,6 +129,9 @@ public class UserService{
         }
     }
 
+    public void updateUserPersonal(User user){
+        userManager.updateUser(user);
+    }
 
     public void deleteUserById(Integer id) {
         userManager.deleteById(id);

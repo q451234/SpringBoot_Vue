@@ -107,6 +107,13 @@ public class UserController {
         return Result.success("修改用户成功");
     }
 
+    @ApiOperation("个人修改用户信息")
+    @PostMapping("/personal")
+    public Result<?> updateUserPersonal(@RequestBody User user){
+        userService.updateUserPersonal(user);
+        return Result.success("修改信息成功");
+    }
+
     @ApiOperation("查询用户")
     @GetMapping("/{id}")
     public Result<User> getUserById(@PathVariable("id") Integer id){

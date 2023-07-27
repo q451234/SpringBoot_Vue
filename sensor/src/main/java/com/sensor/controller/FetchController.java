@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -32,12 +33,23 @@ public class FetchController {
     public Result<?> getAllMenu() throws ParseException {
         List<SensorData> sensorDataList = fetchMapper.fetchSensorList();
 
-        String bucket = "SensorData";
+        String bucket = "sensorFilter";
 
         InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
 
-        PautaUtil.removeException(sensorDataList);
+        System.out.println(sensorDataList.size());
+        sensorDataList = sensorDataList.stream().filter(sensorData ->
+                sensorData.getSubstand() <= Double.parseDouble(sensorData.getLMax()) &&
+                        sensorData.getSubstand() >= Double.parseDouble(sensorData.getLMin()) &&
+                        sensorData.getMData() <= Double.parseDouble(sensorData.getLMax()) &&
+                        sensorData.getMData() >= Double.parseDouble(sensorData.getLMin()) &&
+                        sensorData.getCalculatedata() <= Double.parseDouble(sensorData.getLMax()) &&
+                        sensorData.getCalculatedata() >= Double.parseDouble(sensorData.getLMin())
 
+        ).collect(Collectors.toList());
+        System.out.println(sensorDataList.size());
+        PautaUtil.removeException(sensorDataList);
+        System.out.println(sensorDataList.size());
         // Write data
         WriteApi writeApi = influxDBClient.makeWriteApi();
 

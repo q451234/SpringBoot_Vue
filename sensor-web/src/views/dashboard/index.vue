@@ -116,9 +116,6 @@ export default {
 
       sensorDataList: {unit : ' '},
       options: [{
-        value: 'ad',
-        label: 'AD值'
-      }, {
         value: 'mData',
         label: '测量值'
       }, {
@@ -127,9 +124,6 @@ export default {
       }, {
         value: 'substand',
         label: '变化量'
-      }, {
-        value: 'temperature',
-        label: '温度'
       }],
       pickerOptions: {
         shortcuts: [{
@@ -184,9 +178,7 @@ export default {
       console.log(this.searchModel.fieldValue);
       sensorApi.getSensorDataDrawList(this.searchModel, flag).then((response) => {
           this.sensorDataList = response.data;
-          this.fieldName = this.getLabel(this.searchModel.fieldValue) + "(" + this.sensorDataList.fieldName + ")";
-          console.log(this.sensorDataList);
-
+          console.log(this.sensorDataList)
           this.initChart();
           if(flag){
             this.$message({
@@ -281,7 +273,7 @@ export default {
           }
         }],
         series: [{
-          name: this.fieldName,
+          name: this.sensorDataList.nameMap.dataName,
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -294,14 +286,59 @@ export default {
           },
           itemStyle: {
             normal: {
-              color: this.colorMap[this.searchModel.fieldValue].color,
-              borderColor: this.colorMap[this.searchModel.fieldValue].borderColor,
+              color: this.colorMap["mData"].color,
+              borderColor: this.colorMap["mData"].borderColor,
               borderWidth: 12
 
             }
           },
-          data: [null].concat(this.sensorDataList.value).concat([null])
-        }]
+          data: [null].concat(this.sensorDataList.value.mData).concat([null])
+        },
+        {
+          name: this.sensorDataList.nameMap.calculatedataName,
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 5,
+          showSymbol: false,
+          lineStyle: {
+            normal: {
+              width: 1
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: this.colorMap["calculatedata"].color,
+              borderColor: this.colorMap["calculatedata"].borderColor,
+              borderWidth: 12
+
+            }
+          },
+          data: [null].concat(this.sensorDataList.value.calculatedata).concat([null])
+        },
+        {
+          name: this.sensorDataList.nameMap.substandName,
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 5,
+          showSymbol: false,
+          lineStyle: {
+            normal: {
+              width: 1
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: this.colorMap["substand"].color,
+              borderColor: this.colorMap["substand"].borderColor,
+              borderWidth: 12
+
+            }
+          },
+          data: [null].concat(this.sensorDataList.value.substand).concat([null])
+        }
+      ]
       })
     }
   }

@@ -1,15 +1,13 @@
 package com.sensor.controller;
 
+import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.service.SensorDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,20 +40,26 @@ public class SensorDataController {
         }
         data.put("rows", sensorDataList);
 
+        if(sensorDataList.size() == 0){
+            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或数据为空");
+        }
         return Result.success(data, "查询成功");
     }
 
     @ApiOperation("传感器数据绘制")
-    @GetMapping("/draw")
+    @PostMapping("/draw")
     public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
                                                         @RequestParam(value = "cdId") String cdId,
                                                         @RequestParam(value = "dateStart") String dateStart,
                                                         @RequestParam(value = "dateEnd") String dateEnd,
-                                                        @RequestParam(value = "field") String field){
+                                                        @RequestBody List<String> field){
+
 
         Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawList(projectName, cdId, dateStart, dateEnd, field);
 
-
+        if(sensorDataList.get("date") == null){
+            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或数据为空");
+        }
         return Result.success(sensorDataList, "查询成功");
     }
 }

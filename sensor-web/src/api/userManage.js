@@ -27,6 +27,13 @@ export default{
       data: user
     });
   },
+  updateUserPersonal(user){
+    return request({
+      url: '/user/personal',
+      method: 'post',
+      data: user
+    });
+  },
   saveUser(user){
     if(user.id == null && user.id == undefined){
       return this.addUser(user);

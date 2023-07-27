@@ -20,14 +20,14 @@ export default{
   getSensorDataDrawList(searchModel){
     return request({
       url: '/sensor/draw',
-      method: 'get',
+      method: 'post',
       params:{
         projectName: searchModel.projectName,
         cdId: searchModel.cdId,
         dateStart: searchModel.dateValue[0],
         dateEnd: searchModel.dateValue[1],
-        field: searchModel.fieldValue
-      }
+      },
+      data: searchModel.fieldValue
     });
   }
 }

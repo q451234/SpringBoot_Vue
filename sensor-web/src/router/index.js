@@ -55,6 +55,19 @@ export const constantRoutes = [
     }]
   },
 
+  {
+    path: '/info',
+    component: Layout,
+    hidden: true,
+    redirect: '/info',
+    children: [{
+      path: 'info',
+      name: 'info',
+      component: () => import('@/views/info/index'),
+      meta: { title: '个人信息', icon: 'dashboard' ,affix: true}
+    }]
+  },
+
   // {
   //   path: '/sys',
   //   component: Layout,
