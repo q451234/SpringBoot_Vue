@@ -176,8 +176,13 @@ public class SensorDataService {
         sensorDataList.put("value", valueListMap);
 
         DecimalFormat df = new DecimalFormat("#.00");
-        sensorDataList.put("min", df.format(min));
-        sensorDataList.put("max", df.format(max));
+        if(min == max){
+            sensorDataList.put("min", df.format(min - 1));
+            sensorDataList.put("max", df.format(max + 1));
+        }else{
+            sensorDataList.put("min", df.format(min));
+            sensorDataList.put("max", df.format(max));
+        }
 
         return sensorDataList;
     }

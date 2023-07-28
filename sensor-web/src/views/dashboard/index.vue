@@ -4,7 +4,7 @@
       <el-card id="search">
           <el-row>
               <el-col :span="20">
-                <el-select v-model="searchModel.projectName" placeholder="项目" @change="cleanBoxCd">
+                <el-select v-model="searchModel.projectName" placeholder="项目" clearable @change="cleanBoxCd" >
                   <el-option
                     v-for="item in projectNameOptions"
                     :key="item.value"
@@ -12,7 +12,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-                <el-select v-model="searchModel.boxName" placeholder="采集仪" @change="selectBox">
+                <el-select v-model="searchModel.boxName" placeholder="采集仪" clearable @change="selectBox">
                   <el-option
                     v-for="item in boxNameOptions[searchModel.projectName]"
                     :key="item.value"
@@ -20,7 +20,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-                <el-select v-model="searchModel.cdName" placeholder="采点">
+                <el-select v-model="searchModel.cdName" clearable placeholder="采点">
                   <el-option                  
                     v-for="item in cdSelect"
                     :key="item.value"
@@ -28,7 +28,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              <el-select v-model="searchModel.fieldValue" multiple placeholder="请选择">
+              <el-select v-model="searchModel.fieldValue" clearable multiple placeholder="请选择">
                   <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -208,9 +208,11 @@ export default {
     },
     getNavigate(){
       sensorApi.getNavigate().then((response) =>{
-        let prolist = response.data.projectNameList;
+        let navigate = response.data;
+
+        let prolist = Object.keys(navigate);
         for(var i = 0; i < prolist.length; i++){
-          let proOpt = this.createOptions(response.data.projectNameMap[prolist[i]])
+          let proOpt = this.createOptions(Object.keys(navigate[prolist[i]]))
           this.boxNameOptions[prolist[i]] = proOpt;
 
           let pop = {};
@@ -218,7 +220,7 @@ export default {
           this.projectNameOptions.push(pop);
         } 
  
-        let cdNameMap = response.data.cdNameMap;
+        let cdNameMap = navigate;
         for(let key in cdNameMap){
           for(let box in cdNameMap[key]){
             for(var i = 0; i < cdNameMap[key][box].length; i++){
@@ -228,9 +230,6 @@ export default {
         } 
         
         this.cdNameOptions = cdNameMap;
-        // console.log(this.boxNameOptions)
-        // console.log(this.projectNameOptions)
-        // console.log(cdNameMap)
         this.selectBox(false);
       })
     },

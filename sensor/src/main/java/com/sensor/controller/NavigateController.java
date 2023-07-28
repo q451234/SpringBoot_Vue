@@ -1,9 +1,6 @@
 package com.sensor.controller;
 
 import com.sensor.common.Result;
-import com.sensor.entity.Menu;
-import com.sensor.entity.Navigate;
-import com.sensor.service.MenuService;
 import com.sensor.service.NavigateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +24,7 @@ public class NavigateController {
     @ApiOperation("获取所有导航栏")
     @GetMapping
     public Result<?> getAllNavigate(){
-        Map<String, Object> navigateMap =  navigateService.getNavigateMap();
+        Map<String, Map<String, List<String>>> navigateMap =  navigateService.getNavigateMap();
         return Result.success(navigateMap);
     }
 
