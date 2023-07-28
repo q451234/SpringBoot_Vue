@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       chart: null,
-      fieldName : '',
+      fieldName : '曲线图',
       searchModel: {
         pageNo: 1,
         pageSize: 10,

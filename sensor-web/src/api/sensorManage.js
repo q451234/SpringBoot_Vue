@@ -23,11 +23,18 @@ export default{
       method: 'post',
       params:{
         projectName: searchModel.projectName,
-        cdId: searchModel.cdId,
+        boxName: searchModel.boxName,
+        cdName:searchModel.cdName,
         dateStart: searchModel.dateValue[0],
         dateEnd: searchModel.dateValue[1],
       },
       data: searchModel.fieldValue
+    });
+  },
+  getNavigate(){
+    return request({
+      url: '/navigate',
+      method: 'get',
     });
   }
 }

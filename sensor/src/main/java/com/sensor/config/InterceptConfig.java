@@ -24,6 +24,7 @@ public class InterceptConfig implements WebMvcConfigurer {
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/**",
-                        "/fetch");
+                        "/fetch"
+                        );
     }
 }

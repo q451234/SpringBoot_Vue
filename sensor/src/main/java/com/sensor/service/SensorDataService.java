@@ -29,11 +29,11 @@ public class SensorDataService {
 //        String bucket = "SensorData";
         String bucket = "sensorFilter";
         // Flux
-        String flux = String.format("from(bucket: \"SensorData\")\n" +
+        String flux = String.format("from(bucket: \"%s\")\n" +
                 "  |> range(start: %s, stop: %s)\n" +
                 "  |> filter(fn: (r) => r[\"_measurement\"] == \"%s\")\n" +
                 "  |> filter(fn: (r) => r[\"_field\"] == \"%s\")\n" +
-                "  |> filter(fn: (r) => r[\"cdId\"] == \"%s\")\n", dateStart, dateEnd, projectName, field, cdId);
+                "  |> filter(fn: (r) => r[\"cdId\"] == \"%s\")\n", bucket,dateStart, dateEnd, projectName, field, cdId);
 
         if(!flag){
             flux += String.format("  |> limit(n:%s, offset: %s)", pageSize, (pageNo - 1) * pageSize);
@@ -91,14 +91,14 @@ public class SensorDataService {
         }
     }
 
-    public Map<String, Object> getSensorDataDrawList(String projectName, String cdId, String dateStart, String dateEnd, List<String> field) {
-        String bucket = "SensorData";
+    public Map<String, Object> getSensorDataDrawList(String projectName, String boxName, String cdName, String dateStart, String dateEnd, List<String> field) {
+        String bucket = "sensorFilter";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // Flux
-        StringBuilder flux = new StringBuilder(String.format("from(bucket: \"SensorData\")\n" +
+        StringBuilder flux = new StringBuilder(String.format("from(bucket: \"%s\")\n" +
                 "  |> range(start: %s, stop: %s)\n" +
                 "  |> filter(fn: (r) => r[\"_measurement\"] == \"%s\")\n" +
-                "  |> filter(fn: (r) => ", dateStart, dateEnd, projectName));
+                "  |> filter(fn: (r) => ", bucket,dateStart, dateEnd, projectName));
 
         for(int i = 0; i < field.size(); i++){
             flux.append(String.format("r[\"_field\"] == \"%s\"", field.get(i)));
@@ -107,7 +107,8 @@ public class SensorDataService {
             }
         }
 
-        flux.append(String.format(")\n" + "  |> filter(fn: (r) => r[\"cdId\"] == \"%s\")\n", cdId));
+        flux.append(String.format(")\n" + "  |> filter(fn: (r) => r[\"boxName\"] == \"%s\")\n", boxName));
+        flux.append(String.format("  |> filter(fn: (r) => r[\"cdName\"] == \"%s\")\n", cdName));
 
         InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
         QueryApi queryApi = influxDBClient.getQueryApi();

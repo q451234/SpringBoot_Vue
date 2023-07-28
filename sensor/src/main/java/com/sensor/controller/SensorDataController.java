@@ -49,16 +49,17 @@ public class SensorDataController {
     @ApiOperation("传感器数据绘制")
     @PostMapping("/draw")
     public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
-                                                        @RequestParam(value = "cdId") String cdId,
+                                                        @RequestParam(value = "cdName") String cdName,
+                                                        @RequestParam(value = "boxName") String boxName,
                                                         @RequestParam(value = "dateStart") String dateStart,
                                                         @RequestParam(value = "dateEnd") String dateEnd,
                                                         @RequestBody List<String> field){
 
 
-        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawList(projectName, cdId, dateStart, dateEnd, field);
+        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawList(projectName, boxName, cdName, dateStart, dateEnd, field);
 
         if(sensorDataList.get("date") == null){
-            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或数据为空");
+            return Result.fail(Constant.FAIL_CODE_4, "数据被全部清洗");
         }
         return Result.success(sensorDataList, "查询成功");
     }

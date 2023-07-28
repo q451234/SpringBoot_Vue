@@ -1,19 +1,33 @@
 <template>
+  
   <div>
       <el-card id="search">
           <el-row>
               <el-col :span="20">
-              <el-input
-                  v-model="searchModel.projectName"
-                  placeholder="项目名"
-                  clearable
-              ></el-input>
-              <el-input
-                  v-model="searchModel.cdId"
-                  placeholder="测点ID"
-                  clearable
-              ></el-input>
-
+                <el-select v-model="searchModel.projectName" placeholder="项目" @change="cleanBoxCd">
+                  <el-option
+                    v-for="item in projectNameOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <el-select v-model="searchModel.boxName" placeholder="采集仪" @change="selectBox">
+                  <el-option
+                    v-for="item in boxNameOptions[searchModel.projectName]"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <el-select v-model="searchModel.cdName" placeholder="采点">
+                  <el-option                  
+                    v-for="item in cdSelect"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               <el-select v-model="searchModel.fieldValue" multiple placeholder="请选择">
                   <el-option
                   v-for="item in options"
@@ -81,6 +95,12 @@ export default {
   },
   data() {
     return {
+      projectNameOptions:[],
+      boxNameOptions:{},
+      cdNameOptions:{},
+      cdSelect:[],
+
+
       chart: null,
       fieldName : '',
       searchModel: {
@@ -88,8 +108,9 @@ export default {
         pageSize: 10,
         dateValue: [new Date(2023, 1, 1, 0, 0), new Date(2023, 3, 1, 0, 0)],
         fieldValue: ['mData'],
-        projectName: '1标',
-        cdId: '001_19_004'
+        projectName:"2标",
+        boxName:"CJ136020",
+        cdName:"CX190080L1-01X"
       },
       colorMap: {
         'ad':{
@@ -172,13 +193,60 @@ export default {
   },
   created() {
     this.getSensorDataDrawList(false);
+    this.getNavigate();
   },
   methods: {
+    selectBox(clean = true){
+      this.cdSelect = this.cdNameOptions[this.searchModel.projectName][this.searchModel.boxName]
+      if(clean){
+        this.searchModel.cdName = '';        
+      }
+    },
+    cleanBoxCd(){
+      this.searchModel.boxName = '';
+      this.searchModel.cdName = '';
+    },
+    getNavigate(){
+      sensorApi.getNavigate().then((response) =>{
+        let prolist = response.data.projectNameList;
+        for(var i = 0; i < prolist.length; i++){
+          let proOpt = this.createOptions(response.data.projectNameMap[prolist[i]])
+          this.boxNameOptions[prolist[i]] = proOpt;
+
+          let pop = {};
+          pop.value = prolist[i];
+          this.projectNameOptions.push(pop);
+        } 
+ 
+        let cdNameMap = response.data.cdNameMap;
+        for(let key in cdNameMap){
+          for(let box in cdNameMap[key]){
+            for(var i = 0; i < cdNameMap[key][box].length; i++){
+              cdNameMap[key][box][i] = {value: cdNameMap[key][box][i]}
+            }
+          }
+        } 
+        
+        this.cdNameOptions = cdNameMap;
+        // console.log(this.boxNameOptions)
+        // console.log(this.projectNameOptions)
+        // console.log(cdNameMap)
+        this.selectBox(false);
+      })
+    },
+    createOptions(optionsList){
+      let res = [];
+      for(var i = 0; i < optionsList.length; i++){
+        let optionsDic = {};
+        optionsDic.value = optionsList[i]
+        res.push(optionsDic);
+      }
+
+      return res;
+    },
     getSensorDataDrawList(flag = true) {
-      console.log(this.searchModel.fieldValue);
       sensorApi.getSensorDataDrawList(this.searchModel, flag).then((response) => {
           this.sensorDataList = response.data;
-          console.log(this.sensorDataList)
           this.initChart();
           if(flag){
             this.$message({
