@@ -48,8 +48,6 @@ export default {
       this.tableData = results
       this.tableDataShow = this.tableData.slice(0, 10)
       this.tableHeader = header
-      console.log(this.tableDataShow)
-      console.log(this.tableHeader)
     },
     uploadFile(tableData){
       fileApi.uploadFile(tableData).then(response => {

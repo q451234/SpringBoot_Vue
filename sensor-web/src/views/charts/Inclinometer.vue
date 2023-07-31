@@ -235,6 +235,7 @@
           let navigate = response.data;
   
           let prolist = Object.keys(navigate);
+          prolist.sort();
           for(var i = 0; i < prolist.length; i++){
             let proOpt = this.createOptions(navigate[prolist[i]])
             this.boxNameOptions[prolist[i]] = proOpt;

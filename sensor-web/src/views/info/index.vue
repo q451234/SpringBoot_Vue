@@ -103,7 +103,6 @@ export default {
     getUserInfo(){
       getInfo(state.token).then((response) => {
         this.userForm = response.data;
-        console.log(this.userForm)
       });
     },
     saveUser() {
@@ -113,12 +112,11 @@ export default {
           // 提交请求给后台
           userApi.updateUserPersonal(this.userForm).then(response => {
             // 成功提示
-            // console.log(this.userForm)
-            // 刷新表格
             this.$message({
               message: response.message,
               type: 'success'
             });
+            // 刷新表格
             this.getUserInfo();
           });
         } else {

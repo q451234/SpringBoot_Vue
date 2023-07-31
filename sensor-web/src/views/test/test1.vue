@@ -182,8 +182,7 @@ import sensorApi from "@/api/sensorManage";
         sensorApi.getSensorDataList(this.searchModel, false).then((response) => {
           this.sensorDataList = response.data.rows;
           this.fieldName = this.getLabel(this.searchModel.fieldValue) + "(" + this.sensorDataList[0]._field + ")";
-          // console.log(this.sensorDataList)
-          // console.log(this.fieldName)
+
         });        
       },
       getSensorDataListTotal() {

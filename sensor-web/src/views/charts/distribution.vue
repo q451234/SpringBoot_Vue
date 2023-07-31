@@ -260,6 +260,7 @@ export default {
         let navigate = response.data;
 
         let prolist = Object.keys(navigate);
+        prolist.sort();
         for(var i = 0; i < prolist.length; i++){
           let proOpt = this.createOptions(Object.keys(navigate[prolist[i]]))
           this.sensorTypeOptions[prolist[i]] = proOpt;
@@ -297,15 +298,13 @@ export default {
     getSensorDataDrawListDistribution(flag = true) {
       sensorApi.getSensorDataDrawListDistribution(this.searchModel, flag).then((response) => {
           this.sensorDataList = response.data;
-          // this.sensorDataList.cdNameList.sort();
-          console.log(this.sensorDataList)
 
           let unit = this.searchModel.sensorType;
           this.unit = unit.substring(unit.indexOf("(") + 1 ,unit.indexOf(")"));
 
           this.chart = null;
           this.createSeries();
-          console.log(this.series)
+
           this.unit = this.sensorDataList.fieldName + '(' + this.unit + ')';
           this.initChart();
 

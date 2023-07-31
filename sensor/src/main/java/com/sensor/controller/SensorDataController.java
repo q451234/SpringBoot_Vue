@@ -74,9 +74,12 @@ public class SensorDataController {
                                                             @RequestParam(value = "dateEnd") String dateEnd,
                                                             @RequestParam(value = "field") String field){
 
-
-        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawDistributionList(projectName, boxName, sensorType, dateStart, dateEnd, field);
-
+        Map<String, Object> sensorDataList;
+        try{
+            sensorDataList = sensorDataService.getSensorDataDrawDistributionList(projectName, boxName, sensorType, dateStart, dateEnd, field);
+        }catch (IndexOutOfBoundsException e){
+            return Result.fail(Constant.FAIL_CODE_4, "请完善查询条件");
+        }
         return Result.success(sensorDataList, "查询成功");
     }
 }

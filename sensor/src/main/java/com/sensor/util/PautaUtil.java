@@ -21,7 +21,7 @@ public class PautaUtil {
             Pauta pauta = new Pauta(mapList);
             List<SensorData> exceptionList = pauta.judge();
             sensorDataList.removeAll(exceptionList);
-            log.debug("异常数据来自传感器" + key + " 过滤数据大小: " + exceptionList.size());
+            log.debug("异常数据来自测点" + key + " 过滤数据大小: " + exceptionList.size());
         }
     }
 }
