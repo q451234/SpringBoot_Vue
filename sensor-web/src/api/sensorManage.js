@@ -9,17 +9,18 @@ export default{
         pageNo: searchModel.pageNo,
         pageSize: searchModel.pageSize,
         projectName: searchModel.projectName,
-        cdId: searchModel.cdId,
+        cdName: searchModel.cdName,
+        boxName: searchModel.boxName,
         dateStart: searchModel.dateValue[0],
         dateEnd: searchModel.dateValue[1],
-        field: searchModel.filedValue,
+        field: searchModel.fieldValue,
         flag: flag
       }
     });
   },
-  getSensorDataDrawList(searchModel){
+  getSensorDataDrawListProcess(searchModel){
     return request({
-      url: '/sensor/draw',
+      url: '/sensor/drawProcess',
       method: 'post',
       params:{
         projectName: searchModel.projectName,
@@ -31,10 +32,39 @@ export default{
       data: searchModel.fieldValue
     });
   },
-  getNavigate(){
+  getSensorDataDrawListDistribution(searchModel){
     return request({
-      url: '/navigate',
+      url: '/sensor/drawDistribution',
       method: 'get',
+      params:{
+        projectName: searchModel.projectName,
+        boxName: searchModel.boxName,
+        sensorType:searchModel.sensorType,
+        dateStart: searchModel.dateValue[0],
+        dateEnd: searchModel.dateValue[1],
+        field: searchModel.fieldValue
+      },
+    });
+  },
+  getNavigateProcess(){
+    return request({
+      url: '/navigate/process',
+      method: 'get',
+    });
+  },
+  getNavigateDistribution(){
+    return request({
+      url: '/navigate/distribution',
+      method: 'get',
+    });
+  },
+  getNavigateInclinometer(searchModel){
+    return request({
+      url: '/navigate/inclinometer',
+      method: 'get',
+      params:{
+        sensorType: searchModel.sensorType
+      }
     });
   }
 }

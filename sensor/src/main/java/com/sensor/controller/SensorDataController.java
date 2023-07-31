@@ -24,7 +24,8 @@ public class SensorDataController {
     @ApiOperation("传感器数据搜索")
     @GetMapping("/list")
     public Result<Map<String,Object>> getSensorDataList(@RequestParam(value = "projectName",required = false) String projectName,
-                                                          @RequestParam(value = "cdId",required = false) String cdId,
+                                                          @RequestParam(value = "cdName",required = false) String cdName,
+                                                          @RequestParam(value = "boxName",required = false) String boxName,
                                                           @RequestParam(value = "dateStart",required = false) String dateStart,
                                                           @RequestParam(value = "dateEnd",required = false) String dateEnd,
                                                           @RequestParam(value = "field",required = false) String field,
@@ -32,7 +33,7 @@ public class SensorDataController {
                                                           @RequestParam(value = "pageSize") Long pageSize,
                                                           @RequestParam(value = "flag") boolean flag){
 
-        List<Map<String, Object>> sensorDataList = sensorDataService.getSensorDataList(projectName, cdId, dateStart, dateEnd, field, pageNo, pageSize, flag);
+        List<Map<String, Object>> sensorDataList = sensorDataService.getSensorDataList(projectName, boxName, cdName, dateStart, dateEnd, field, pageNo, pageSize, flag);
 
         Map<String,Object> data = new HashMap<>();
         if(flag){
@@ -46,8 +47,8 @@ public class SensorDataController {
         return Result.success(data, "查询成功");
     }
 
-    @ApiOperation("传感器数据绘制")
-    @PostMapping("/draw")
+    @ApiOperation("传感器过程数据绘制")
+    @PostMapping("/drawProcess")
     public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
                                                         @RequestParam(value = "cdName") String cdName,
                                                         @RequestParam(value = "boxName") String boxName,
@@ -56,11 +57,26 @@ public class SensorDataController {
                                                         @RequestBody List<String> field){
 
 
-        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawList(projectName, boxName, cdName, dateStart, dateEnd, field);
+        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawProcessList(projectName, boxName, cdName, dateStart, dateEnd, field);
 
         if(sensorDataList.get("date") == null){
             return Result.fail(Constant.FAIL_CODE_4, "数据被全部清洗");
         }
+        return Result.success(sensorDataList, "查询成功");
+    }
+
+    @ApiOperation("传感器分布数据绘制")
+    @GetMapping("/drawDistribution")
+    public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
+                                                            @RequestParam(value = "sensorType") String sensorType,
+                                                            @RequestParam(value = "boxName") String boxName,
+                                                            @RequestParam(value = "dateStart") String dateStart,
+                                                            @RequestParam(value = "dateEnd") String dateEnd,
+                                                            @RequestParam(value = "field") String field){
+
+
+        Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawDistributionList(projectName, boxName, sensorType, dateStart, dateEnd, field);
+
         return Result.success(sensorDataList, "查询成功");
     }
 }

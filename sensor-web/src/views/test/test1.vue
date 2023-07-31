@@ -3,18 +3,32 @@
     <el-card id="search">
       <el-row>
         <el-col :span="20">
-          <el-input
-            v-model="searchModel.projectName"
-            placeholder="项目名"
-            clearable
-          ></el-input>
-          <el-input
-            v-model="searchModel.cdId"
-            placeholder="测点ID"
-            clearable
-          ></el-input>
+          <el-select v-model="searchModel.projectName" placeholder="项目" clearable @change="cleanBoxCd" >
+            <el-option
+              v-for="item in projectNameOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select v-model="searchModel.boxName" placeholder="采集仪" clearable @change="selectBox">
+            <el-option
+              v-for="item in boxNameOptions[searchModel.projectName]"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select v-model="searchModel.cdName" clearable placeholder="采点">
+            <el-option                  
+              v-for="item in cdSelect"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
 
-          <el-select v-model="searchModel.filedValue" clearable placeholder="请选择">
+          <el-select v-model="searchModel.fieldValue" clearable placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -101,13 +115,21 @@ import sensorApi from "@/api/sensorManage";
   export default {
     data() {
       return {
+        projectNameOptions:[],
+        boxNameOptions:{},
+        cdNameOptions:{},
+        cdSelect:[],
+
         total: 0,
         fieldName : '',
         searchModel: {
           pageNo: 1,
           pageSize: 10,
           dateValue: [new Date(2023, 1, 1, 0, 0), new Date(2023, 3, 1, 0, 0)],
-          filedValue: ''
+          fieldValue: '',
+          projectName:"",
+          boxName:"",
+          cdName:""
         },
         sensorDataList: [],
         options: [{
@@ -159,9 +181,9 @@ import sensorApi from "@/api/sensorManage";
       getSensorDataList() {
         sensorApi.getSensorDataList(this.searchModel, false).then((response) => {
           this.sensorDataList = response.data.rows;
-          this.fieldName = this.getLabel(this.searchModel.filedValue) + "(" + this.sensorDataList[0]._field + ")";
-          console.log(this.sensorDataList)
-          console.log(this.fieldName)
+          this.fieldName = this.getLabel(this.searchModel.fieldValue) + "(" + this.sensorDataList[0]._field + ")";
+          // console.log(this.sensorDataList)
+          // console.log(this.fieldName)
         });        
       },
       getSensorDataListTotal() {
@@ -188,8 +210,60 @@ import sensorApi from "@/api/sensorManage";
           return item.value === value;
         });
         return obj.label;
-      }
-    }
+      },
+      selectBox(clean = true){
+        this.cdSelect = this.cdNameOptions[this.searchModel.projectName][this.searchModel.boxName]
+        if(clean){
+          this.searchModel.cdName = '';        
+        }
+      },
+      cleanBoxCd(){
+        this.searchModel.boxName = '';
+        this.searchModel.cdName = '';
+      },
+      getNavigateProcess(){
+        sensorApi.getNavigateProcess().then((response) =>{
+          let navigate = response.data;
+
+          let prolist = Object.keys(navigate);
+          for(var i = 0; i < prolist.length; i++){
+            let proOpt = this.createOptions(Object.keys(navigate[prolist[i]]))
+            this.boxNameOptions[prolist[i]] = proOpt;
+
+            let pop = {};
+            pop.value = prolist[i];
+            this.projectNameOptions.push(pop);
+          } 
+  
+          let cdNameMap = navigate;
+          for(let key in cdNameMap){
+            for(let box in cdNameMap[key]){
+              cdNameMap[key][box].sort()
+              for(var i = 0; i < cdNameMap[key][box].length; i++){
+                cdNameMap[key][box][i] = {value: cdNameMap[key][box][i]}
+              }
+            }
+          } 
+          
+          this.cdNameOptions = cdNameMap;
+          this.selectBox(false);
+        })
+      },
+      createOptions(optionsList){
+        optionsList.sort();
+        let res = [];
+        for(var i = 0; i < optionsList.length; i++){
+          let optionsDic = {};
+          optionsDic.value = optionsList[i]
+          res.push(optionsDic);
+        }
+
+        return res;
+      },
+    },
+    created() {
+      this.getNavigateProcess();
+    },
   }
 </script>
 

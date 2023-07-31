@@ -83,7 +83,6 @@ function myFilterAsyncRoutes(menuList) {
   menuList.filter(menu => {
     if (menu.component === 'Layout') {
       menu.component = Layout
-      console.log(menu.component);
     } else {
       menu.component = require(`@/views/${menu.component}.vue`).default
     }

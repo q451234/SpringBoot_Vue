@@ -23,7 +23,7 @@ public class SensorDataService {
 
     @ApiOperation("传感器数据搜索")
     @GetMapping("/list")
-    public List<Map<String, Object>> getSensorDataList(String projectName, String cdId, String dateStart,
+    public List<Map<String, Object>> getSensorDataList(String projectName, String boxName, String cdName, String dateStart,
                                                  String dateEnd, String field, Long pageNo, Long pageSize, boolean flag){
 
 //        String bucket = "SensorData";
@@ -33,7 +33,8 @@ public class SensorDataService {
                 "  |> range(start: %s, stop: %s)\n" +
                 "  |> filter(fn: (r) => r[\"_measurement\"] == \"%s\")\n" +
                 "  |> filter(fn: (r) => r[\"_field\"] == \"%s\")\n" +
-                "  |> filter(fn: (r) => r[\"cdId\"] == \"%s\")\n", bucket,dateStart, dateEnd, projectName, field, cdId);
+                "  |> filter(fn: (r) => r[\"boxName\"] == \"%s\")\n" +
+                "  |> filter(fn: (r) => r[\"cdName\"] == \"%s\")\n", bucket,dateStart, dateEnd, projectName, field, boxName, cdName);
 
         if(!flag){
             flux += String.format("  |> limit(n:%s, offset: %s)", pageSize, (pageNo - 1) * pageSize);
@@ -91,7 +92,7 @@ public class SensorDataService {
         }
     }
 
-    public Map<String, Object> getSensorDataDrawList(String projectName, String boxName, String cdName, String dateStart, String dateEnd, List<String> field) {
+    public Map<String, Object> getSensorDataDrawProcessList(String projectName, String boxName, String cdName, String dateStart, String dateEnd, List<String> field) {
         String bucket = "sensorFilter";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // Flux
@@ -183,6 +184,79 @@ public class SensorDataService {
             sensorDataList.put("min", df.format(min));
             sensorDataList.put("max", df.format(max));
         }
+
+        return sensorDataList;
+    }
+
+    public Map<String, Object> getSensorDataDrawDistributionList(String projectName, String boxName, String sensorType, String dateStart, String dateEnd, String field) {
+        String bucket = "sensorFilter";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // Flux
+        StringBuilder flux = new StringBuilder(String.format("from(bucket: \"%s\")\n" +
+                "  |> range(start: %s, stop: %s)\n" +
+                "  |> filter(fn: (r) => r[\"_measurement\"] == \"%s\")\n" +
+                "  |> filter(fn: (r) => r[\"chuanganqileixing\"] == \"%s\")\n " +
+                "  |> filter(fn: (r) => r[\"boxName\"] == \"%s\")" +
+                "  |> filter(fn: (r) => r[\"_field\"] == \"%s\")", bucket, dateStart, dateEnd, projectName, sensorType, boxName, field));
+
+        InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
+        QueryApi queryApi = influxDBClient.getQueryApi();
+
+        // Synchronous query
+        List<FluxTable> tables = queryApi.query(flux.toString());
+
+
+        double min = Double.MAX_VALUE;
+        double max = -Double.MAX_VALUE;
+        Map<String, Map<String, Double>> fetchMap = new HashMap<>();
+        for (FluxTable fluxTable : tables) {
+            List<FluxRecord> fluxRecordList = fluxTable.getRecords();
+            Map<String, Double> fluxMap = fluxRecordList.stream().collect(Collectors.toMap(fluxRecord -> dateFormat.format(new Date(fluxRecord.getTime().toEpochMilli())), fluxRecord -> Double.parseDouble(fluxRecord.getValue().toString())));
+            fetchMap.put(fluxRecordList.get(0).getValueByKey("cdName").toString() + "(" + fluxRecordList.get(0).getValueByKey("holeId").toString()+ ")", fluxMap);
+        }
+
+        Map<String, Map<String, Double>> distributionMap = new HashMap<>();
+        for(Map.Entry<String, Map<String, Double>> cdEntry: fetchMap.entrySet()){
+            for(Map.Entry<String, Double> timeEntry: cdEntry.getValue().entrySet()){
+                Map<String, Double> dMap  = distributionMap.getOrDefault(timeEntry.getKey(), new HashMap<>());
+                dMap.put(cdEntry.getKey(), timeEntry.getValue());
+                distributionMap.put(timeEntry.getKey(), dMap);
+            }
+
+            Collection<Double> fieldNum = cdEntry.getValue().values();
+            Double distance = Collections.max(fieldNum) - Collections.min(fieldNum);
+            Double average = fieldNum.stream().collect(Collectors.averagingDouble(x -> x));
+            min = Math.min(average - distance, min);
+            max = Math.max(average + distance, max);
+        }
+
+        List<String> cdNameList = new ArrayList<>(fetchMap.keySet());
+        Collections.sort(cdNameList);
+
+        Map<String, Object> sensorDataList = new HashMap<>();
+        DecimalFormat df = new DecimalFormat("#.00");
+        if(min == max){
+            sensorDataList.put("min", df.format(min - 1));
+            sensorDataList.put("max", df.format(max + 1));
+        }else{
+            sensorDataList.put("min", df.format(min));
+            sensorDataList.put("max", df.format(max));
+        }
+        sensorDataList.put("cdNameList", cdNameList);
+        sensorDataList.put("distributionMap", distributionMap);
+
+
+        List<FluxColumn> fluxColumnList = tables.get(0).getColumns();
+        HashMap<String, Object> fieldNameMap = new HashMap<>();
+        for(FluxColumn fluxColumn : fluxColumnList){
+            String key = fluxColumn.getLabel();
+            if(Arrays.asList(checkName).contains(key)){
+                fieldNameMap.put(key, tables.get(0).getRecords().get(0).getValueByKey(key));
+            }
+        }
+        String fieldName = getFieldName((String) tables.get(0).getRecords().get(0).getValueByKey("_field"), fieldNameMap);
+        sensorDataList.put("fieldName", fieldName);
 
         return sensorDataList;
     }
