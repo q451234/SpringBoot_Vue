@@ -63,7 +63,7 @@ public class RoleController {
     @PutMapping
     public Result<?> updateRole(@RequestBody Role role){
         roleService.updateRole(role);
-        return Result.success("修改用户成功");
+        return Result.success("修改角色成功");
     }
 
     @ApiOperation("查询角色")
@@ -77,6 +77,6 @@ public class RoleController {
     @DeleteMapping("/{id}")
     public Result<Role> deleteRoleById(@PathVariable("id") Integer id){
         roleService.deleteRoleById(id);
-        return Result.success("删除用户成功");
+        return Result.success("删除角色成功");
     }
 }

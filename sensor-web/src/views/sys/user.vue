@@ -148,20 +148,22 @@ export default {
       
     };
     var validatePassword = (rule, value, callback) => {
+      if(value != null){
+        if (value.length < 6) {
+          callback(new Error('请输入至少6位的密码'))
+          return false
+        } else if (
+          !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!*#$%&_=])[A-Za-z\d@!*#$%&_=]{8,18}$/.test(value)
+        ) {
+          callback(new Error('密码必须包含字母、数字和特殊字符(@!*#$%&_=)'))
+          return false
+        } else {
+          callback()
+        }           
+      }
       if(this.title == "新增用户"){
-        if (value !== '') {
-          if (value.length < 6) {
-            callback(new Error('请输入至少6位的密码'))
-            return false
-          } else if (
-            !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!*#$%&_=])[A-Za-z\d@!*#$%&_=]{8,18}$/.test(value)
-          ) {
-            callback(new Error('密码必须包含字母、数字和特殊字符(@!*#$%&_=)'))
-            return false
-          } else {
-            callback()
-          }
-        }        
+        callback(new Error('请输入密码'))
+        return false
       }
       callback()
     }

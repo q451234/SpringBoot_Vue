@@ -88,15 +88,25 @@
           prop="menuIdList"
           :label-width="formLabelWidth"
         >
-        <el-tree
-             :data="menuList"
-             :props="menuProps"
-             node-key="menuId"
-             show-checkbox
-             style="width:85%"
-             default-expand-all
-             ref = "menuRef"
-        ></el-tree>
+          <el-tree
+              :data="menuList"
+              :props="menuProps"
+              node-key="menuId"
+              show-checkbox
+              style="width:85%"
+              default-expand-all
+              ref = "menuRef"
+          ></el-tree>
+        </el-form-item>
+        
+        <el-form-item
+          label="权限设置"
+          :label-width="formLabelWidth"
+        >
+          <el-checkbox-group 
+            v-model="authorized">
+            <el-checkbox v-for="item in projectNameList" :label="item" :key="item">{{item}}</el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
 
       </el-form>
@@ -114,6 +124,9 @@ import menuApi from "@/api/menuManage";
 export default {
   data() {
     return {
+      projectNameList : [],
+      authorized:[],
+
       menuList : [],
       menuProps:{
         children : 'children',
@@ -152,6 +165,12 @@ export default {
     };
   },
   methods: {
+    getAllRoleData(){
+      roleApi.getAllRoleData().then(response =>{
+        this.projectNameList = response.data;
+      })
+    },
+
     getAllMenu(){
       menuApi.getAllMenu().then(response =>{
         this.menuList = response.data;
@@ -185,6 +204,8 @@ export default {
           let checkedKeys = this.$refs.menuRef.getCheckedKeys();
           let halfCheckedKeys = this.$refs.menuRef.getHalfCheckedKeys();
           this.roleForm.menuIdList = checkedKeys.concat(halfCheckedKeys);
+          this.roleForm.projectNameList = this.authorized;
+          
           // 提交请求给后台
           roleApi.saveRole(this.roleForm).then(response => {
             // 成功提示
@@ -218,6 +239,7 @@ export default {
         roleApi.getRoleById(id).then(response => {
           this.roleForm = response.data;
           this.$refs.menuRef.setCheckedKeys(response.data.menuIdList);
+          this.authorized = response.data.projectNameList;
         });
       }
       this.dialogFormVisible = true;
@@ -240,6 +262,7 @@ export default {
   created() {
     this.getRoleList();
     this.getAllMenu();
+    this.getAllRoleData();
   },
 };
 </script>

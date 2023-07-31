@@ -37,4 +37,7 @@ public class UserRoleManager {
         userRoleMapper.delete(Wrapper);
     }
 
+    public List<Integer> getUserIdByRoleId(Integer roleId){
+        return userRoleMapper.getUserIdByRoleId(roleId);
+    }
 }

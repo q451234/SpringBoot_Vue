@@ -28,4 +28,7 @@ public class Role implements Serializable {
 
     @TableField(exist = false)
     private List<Integer> menuIdList;
+
+    @TableField(exist = false)
+    private List<String> projectNameList;
 }

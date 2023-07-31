@@ -36,7 +36,6 @@ public class User implements Serializable {
 
     private String avatar;
 
-    private Integer deleted;
 
     @TableField(exist = false)
     private List<Integer> roleIdList = new ArrayList<>();

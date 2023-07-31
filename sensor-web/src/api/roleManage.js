@@ -51,4 +51,11 @@ export default{
       method: 'delete'
     });
   },
+
+  getAllRoleData(){
+    return request({
+      url: `/roleData`,
+      method: 'get'
+    });
+  },
 }
