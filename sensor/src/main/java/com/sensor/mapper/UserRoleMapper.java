@@ -17,4 +17,12 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
                     "AND a.user_id = #{userId}"
     })
     public List<String> getRoleNameByUserId(Integer userId);
+
+    @Select({
+            "SELECT b.role_id " +
+                    "FROM user_role a, role b " +
+                    "WHERE a.role_id = b.role_id " +
+                    "AND a.user_id = #{userId}"
+    })
+    public List<Integer> getRoleIdByUserId(Integer userId);
 }

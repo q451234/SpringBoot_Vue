@@ -8,7 +8,8 @@
               v-for="item in projectNameOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.value"
+              :disabled="item.disabled">
             </el-option>
           </el-select>
           <el-select v-model="searchModel.boxName" placeholder="采集仪" clearable @change="selectBox">
@@ -222,9 +223,10 @@ import sensorApi from "@/api/sensorManage";
       },
       getNavigateProcess(){
         sensorApi.getNavigateProcess().then((response) =>{
-          let navigate = response.data;
+          let navigate = response.data.navigate;
 
           let prolist = Object.keys(navigate);
+          prolist.sort();
           for(var i = 0; i < prolist.length; i++){
             let proOpt = this.createOptions(Object.keys(navigate[prolist[i]]))
             this.boxNameOptions[prolist[i]] = proOpt;
@@ -243,6 +245,12 @@ import sensorApi from "@/api/sensorManage";
               }
             }
           } 
+
+          let unauthorized = response.data.unauthorized;
+          for(var i = 0; i < unauthorized.length; i++){
+            unauthorized[i] = {value: unauthorized[i], disabled: true};
+          }
+          this.projectNameOptions = this.projectNameOptions.concat(unauthorized);
           
           this.cdNameOptions = cdNameMap;
           this.selectBox(false);

@@ -1,6 +1,6 @@
 package com.sensor.service;
 
-import com.sensor.manager.MenuManger;
+import com.sensor.manager.MenuManager;
 import com.sensor.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 public class MenuService {
 
     @Autowired
-    MenuManger menuManager;
+    MenuManager menuManager;
 
     public List<Menu> getAllMenu() {
 

@@ -9,7 +9,8 @@
                     v-for="item in projectNameOptions"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    :disabled="item.disabled">
                   </el-option>
                 </el-select>
                 <el-select v-model="searchModel.sensorType" placeholder="传感器类型" clearable @change="selectBox">
@@ -257,7 +258,7 @@ export default {
     },
     getNavigateDistribution(){
       sensorApi.getNavigateDistribution().then((response) =>{
-        let navigate = response.data;
+        let navigate = response.data.navigate;
 
         let prolist = Object.keys(navigate);
         prolist.sort();
@@ -280,6 +281,12 @@ export default {
           }
         } 
         
+        let unauthorized = response.data.unauthorized;
+        for(var i = 0; i < unauthorized.length; i++){
+          unauthorized[i] = {value: unauthorized[i], disabled: true};
+        }
+        this.projectNameOptions = this.projectNameOptions.concat(unauthorized);
+
         this.boxNameOptions = boxNameMap;
         this.selectBox(false);
       })

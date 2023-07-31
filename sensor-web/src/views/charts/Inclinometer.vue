@@ -9,7 +9,8 @@
                       v-for="item in projectNameOptions"
                       :key="item.value"
                       :label="item.label"
-                      :value="item.value">
+                      :value="item.value"
+                      :disabled="item.disabled">
                     </el-option>
                   </el-select>
                     <el-select v-model="searchModel.boxName" clearable placeholder="采集仪">
@@ -232,8 +233,8 @@
       },
       getNavigateInclinometer(){
         sensorApi.getNavigateInclinometer(this.searchModel).then((response) =>{
-          let navigate = response.data;
-  
+          let navigate = response.data.navigate;
+
           let prolist = Object.keys(navigate);
           prolist.sort();
           for(var i = 0; i < prolist.length; i++){
@@ -243,8 +244,13 @@
             let pop = {};
             pop.value = prolist[i];
             this.projectNameOptions.push(pop);
-          } 
-
+          }
+          
+          let unauthorized = response.data.unauthorized;
+          for(var i = 0; i < unauthorized.length; i++){
+            unauthorized[i] = {value: unauthorized[i], disabled: true};
+          }
+          this.projectNameOptions = this.projectNameOptions.concat(unauthorized);
         })
       },
       createOptions(optionsList){
