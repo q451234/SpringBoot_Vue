@@ -24,9 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class FileService {
     public void uploadData(List<SensorData> sensorDataList) throws ParseException {
-        String bucket = "test";
 
-        InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
+        upload("uploadOrigin", sensorDataList);
 
         int originSize = sensorDataList.size();
         sensorDataList = sensorDataList.stream().filter(sensorData ->
@@ -40,6 +39,13 @@ public class FileService {
         ).collect(Collectors.toList());
         log.info("阈值清洗完成, 清洗数据大小: " + (originSize - sensorDataList.size()));
 
+        PautaUtil.removeException(sensorDataList);
+
+        upload("uploadFilter", sensorDataList);
+    }
+
+    public void upload(String bucket, List<SensorData> sensorDataList) throws ParseException {
+        InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
         PautaUtil.removeException(sensorDataList);
         // Write data
         WriteApi writeApi = influxDBClient.makeWriteApi();
