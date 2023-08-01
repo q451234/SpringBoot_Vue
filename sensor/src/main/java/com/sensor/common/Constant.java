@@ -1,5 +1,6 @@
 package com.sensor.common;
 
+//公共常量数据
 public class Constant {
     public final static Integer SUCCESS_CODE = 20000;
 

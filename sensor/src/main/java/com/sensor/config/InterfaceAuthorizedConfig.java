@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+//接口访问权限拦截器
 @Configuration
 public class InterfaceAuthorizedConfig implements WebMvcConfigurer {
 

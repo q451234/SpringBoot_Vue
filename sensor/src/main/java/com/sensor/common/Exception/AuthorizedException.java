@@ -1,7 +1,7 @@
 package com.sensor.common.Exception;
 
 /**
- * 自定义异常类
+ * 自定义权限异常类
  */
 public class AuthorizedException extends Exception {
     //异常信息

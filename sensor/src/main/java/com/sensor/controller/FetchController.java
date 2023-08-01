@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//转移mysql数据到influxdb
 @Slf4j
 @RestController
 @RequestMapping("/fetch")

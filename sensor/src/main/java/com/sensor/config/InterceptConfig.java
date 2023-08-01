@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+//jwt拦截器
 @Configuration
 public class InterceptConfig implements WebMvcConfigurer {
     @Autowired
