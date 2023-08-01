@@ -1,6 +1,8 @@
 package com.sensor.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sensor.common.Access;
+import com.sensor.common.AccessLevel;
 import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.entity.Role;
@@ -24,6 +26,7 @@ public class RoleController {
     private RoleService roleService;
 
     @ApiOperation("获取所有角色信息")
+    @Access(level = AccessLevel.MANAGER)
     @GetMapping("/all")
     public Result<List<Role>> getAllRole(){
         List<Role> roleList = roleService.getALlRole();
@@ -31,6 +34,7 @@ public class RoleController {
     }
 
     @ApiOperation("搜索角色")
+    @Access(level = AccessLevel.ADMIN)
     @GetMapping("/list")
     public Result<Map<String,Object>> getRoleList(@RequestParam(value = "roleName",required = false) String roleName,
                                                   @RequestParam(value = "pageNo") Long pageNo,
@@ -47,6 +51,7 @@ public class RoleController {
     }
 
     @ApiOperation("添加角色")
+    @Access(level = AccessLevel.ADMIN)
     @PostMapping
     public Result<?> addRole(@RequestBody Role role){
         try{
@@ -60,6 +65,7 @@ public class RoleController {
     }
 
     @ApiOperation("更新角色")
+    @Access(level = AccessLevel.ADMIN)
     @PutMapping
     public Result<?> updateRole(@RequestBody Role role){
         roleService.updateRole(role);
@@ -67,6 +73,7 @@ public class RoleController {
     }
 
     @ApiOperation("查询角色")
+    @Access(level = AccessLevel.ADMIN)
     @GetMapping("/{id}")
     public Result<Role> getRoleById(@PathVariable("id") Integer id){
         Role role = roleService.getRoleById(id);
@@ -74,6 +81,7 @@ public class RoleController {
     }
 
     @ApiOperation("删除角色")
+    @Access(level = AccessLevel.ADMIN)
     @DeleteMapping("/{id}")
     public Result<Role> deleteRoleById(@PathVariable("id") Integer id){
         roleService.deleteRoleById(id);

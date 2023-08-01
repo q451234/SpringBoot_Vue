@@ -1,6 +1,8 @@
 package com.sensor.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sensor.common.Access;
+import com.sensor.common.AccessLevel;
 import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.entity.User;
@@ -28,6 +30,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @ApiOperation("获取所有用户信息")
+    @Access(level = AccessLevel.MANAGER)
     @GetMapping("/all")
     public Result<List<User>> getAllUser(){
         List<User> list = userService.getALlUser();
@@ -51,9 +54,9 @@ public class UserController {
 
     @ApiOperation("获取用户信息")
     @GetMapping("/info")
-    public Result<Map<String,Object>> getUserInfo(@RequestParam("token") String token){
+    public Result<Map<String,Object>> getUserInfo(@RequestParam("token") String token, @RequestParam("refresh") boolean refresh){
         // 根据token获取用户信息，redis
-        Map<String,Object> data = userService.getUserInfo(token);
+        Map<String,Object> data = userService.getUserInfo(token, refresh);
         if(data != null){
             return Result.success(data);
         }
@@ -69,6 +72,7 @@ public class UserController {
     }
 
     @ApiOperation("用户搜索")
+    @Access(level = AccessLevel.MANAGER)
     @GetMapping("/list")
     public Result<Map<String,Object>> getUserList(@RequestParam(value = "username",required = false) String username,
                                               @RequestParam(value = "phone",required = false) String phone,
@@ -86,6 +90,7 @@ public class UserController {
     }
 
     @ApiOperation("添加用户")
+    @Access(level = AccessLevel.MANAGER)
     @PostMapping
     public Result<?> addUser(@RequestBody User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -100,6 +105,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户信息")
+    @Access(level = AccessLevel.MANAGER)
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
         if(user.getPassword() != null){
@@ -120,6 +126,7 @@ public class UserController {
     }
 
     @ApiOperation("查询用户")
+    @Access(level = AccessLevel.MANAGER)
     @GetMapping("/{id}")
     public Result<User> getUserById(@PathVariable("id") Integer id){
         User user = userService.getUserById(id);
@@ -127,6 +134,7 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
+    @Access(level = AccessLevel.MANAGER)
     @DeleteMapping("/{id}")
     public Result<User> deleteUserById(@PathVariable("id") Integer id){
         userService.deleteUserById(id);

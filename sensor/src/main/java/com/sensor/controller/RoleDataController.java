@@ -1,5 +1,7 @@
 package com.sensor.controller;
 
+import com.sensor.common.Access;
+import com.sensor.common.AccessLevel;
 import com.sensor.common.Result;
 import com.sensor.entity.Role;
 import com.sensor.entity.RoleData;
@@ -23,6 +25,7 @@ public class RoleDataController {
     private RoleDataService roleDataService;
 
     @ApiOperation("获取所有数据权限列表")
+    @Access(level = AccessLevel.ADMIN)
     @GetMapping
     public Result<?> getAllRoleData(){
         List<RoleData> roleDataList = roleDataService.getAllProject();

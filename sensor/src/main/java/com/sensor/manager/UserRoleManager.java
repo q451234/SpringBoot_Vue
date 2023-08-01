@@ -19,6 +19,10 @@ public class UserRoleManager {
         return userRoleMapper.getRoleNameByUserId(userId);
     }
 
+    public List<Integer> getRoleIdByUserId(Integer userId){
+        return userRoleMapper.getRoleIdByUserId(userId);
+    }
+
     @Transactional
     public void saveUserRole(UserRole userRole){
         userRoleMapper.insert(userRole);

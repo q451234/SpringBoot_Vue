@@ -3,7 +3,7 @@ package com.sensor.service;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxTable;
-import com.sensor.common.AuthorizedException;
+import com.sensor.common.Exception.AuthorizedException;
 import com.sensor.util.FluxUtil;
 import org.springframework.stereotype.Service;
 

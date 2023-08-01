@@ -58,7 +58,7 @@ public class UserService{
     }
 
 
-    public Map<String, Object> getUserInfo(String token) {
+    public Map<String, Object> getUserInfo(String token, boolean refresh) {
 
         User loginUser = null;
         try{
@@ -66,6 +66,10 @@ public class UserService{
         }catch (Exception e){
             e.printStackTrace();
             log.info("JWT解析失败");
+        }
+
+        if(refresh){
+            loginUser = userManager.getByUserId(loginUser.getId());
         }
 
         if(loginUser != null){

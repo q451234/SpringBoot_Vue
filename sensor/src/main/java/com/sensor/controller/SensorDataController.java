@@ -1,8 +1,6 @@
 package com.sensor.controller;
 
-import com.sensor.common.Constant;
-import com.sensor.common.DataAuthorize;
-import com.sensor.common.Result;
+import com.sensor.common.*;
 import com.sensor.service.SensorDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +25,7 @@ public class SensorDataController {
     DataAuthorize dataAuthorize;
 
     @ApiOperation("传感器数据搜索")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping("/list")
     public Result<Map<String,Object>> getSensorDataList(@RequestParam(value = "projectName",required = false) String projectName,
                                                         @RequestParam(value = "cdName",required = false) String cdName,
@@ -53,12 +52,13 @@ public class SensorDataController {
         data.put("rows", sensorDataList);
 
         if(sensorDataList.size() == 0){
-            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或数据为空");
+            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或无可用数据");
         }
         return Result.success(data, "查询成功");
     }
 
     @ApiOperation("传感器过程数据绘制")
+    @Access(level = AccessLevel.NORMAL)
     @PostMapping("/drawProcess")
     public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
                                                             @RequestParam(value = "cdName") String cdName,
@@ -76,12 +76,13 @@ public class SensorDataController {
         Map<String, Object> sensorDataList = sensorDataService.getSensorDataDrawProcessList(projectName, boxName, cdName, dateStart, dateEnd, field);
 
         if(sensorDataList.get("date") == null){
-            return Result.fail(Constant.FAIL_CODE_4, "请完善查询条件");
+            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或无可用数据");
         }
         return Result.success(sensorDataList, "查询成功");
     }
 
     @ApiOperation("传感器分布数据绘制")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping("/drawDistribution")
     public Result<Map<String,Object>> getSensorDataDrawList(@RequestParam(value = "projectName") String projectName,
                                                             @RequestParam(value = "sensorType") String sensorType,
@@ -100,7 +101,7 @@ public class SensorDataController {
         try{
             sensorDataList = sensorDataService.getSensorDataDrawDistributionList(projectName, boxName, sensorType, dateStart, dateEnd, field);
         }catch (IndexOutOfBoundsException e){
-            return Result.fail(Constant.FAIL_CODE_4, "请完善查询条件");
+            return Result.fail(Constant.FAIL_CODE_4, "查询条件不匹配或无可用数据");
         }
         return Result.success(sensorDataList, "查询成功");
     }

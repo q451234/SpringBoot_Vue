@@ -22,6 +22,18 @@
             :disabled="disabled"
           ></el-input>
         </el-form-item>
+        <el-form-item
+          label="确认密码"
+          prop="confirmpassword"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            type="password"
+            v-model="userForm.confirmpassword"
+            autocomplete="off"
+            :disabled="disabled"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="联系电话" :label-width="formLabelWidth">
           <el-input v-model="userForm.phone" autocomplete="off" :disabled="disabled"></el-input>
         </el-form-item>
@@ -45,13 +57,6 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import userApi from "@/api/userManage";
 
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-  }
-}
-
-const state = getDefaultState()
 
 export default {
   data() {
@@ -82,9 +87,24 @@ export default {
           callback()
         }
       }
-    }
+    };
+    var confirm = (rule, value, callback) => {
+      if(value == null && this.userForm.password == null){
+        callback()
+        return;
+      }
+      if (value === '') {
+          callback(new Error('请再次输入密码'));
+      } else if (value !== this.userForm.password) {
+          callback(new Error('两次输入密码不一致!'));
+      } else {
+          callback();
+      }
+    };
 
     return {
+      state : null,
+
       disabled: true,
       formLabelWidth: "70px",
       userForm: {
@@ -93,6 +113,9 @@ export default {
         password: [
           { validator: validatePassword, trigger: "blur" },
         ],
+        confirmpassword: [
+          { validator: confirm, trigger: "blur" },
+        ],
         email: [
           { validator: checkEmail, trigger: "blur" },
         ],
@@ -100,8 +123,13 @@ export default {
     };
   },
   methods: {
-    getUserInfo(){
-      getInfo(state.token).then((response) => {
+    getDefaultState(){
+      return {
+        token: getToken()
+      }
+    },
+    getUserInfo(refresh){
+      getInfo(this.state.token, refresh).then((response) => {
         this.userForm = response.data;
       });
     },
@@ -112,12 +140,18 @@ export default {
           // 提交请求给后台
           userApi.updateUserPersonal(this.userForm).then(response => {
             // 成功提示
+
+            // 刷新表格
+            this.userForm = null;
+            this.state = null;
+            this.state = this.getDefaultState()
+            this.getUserInfo(true);
+            this.disabled = true;
+            
             this.$message({
               message: response.message,
               type: 'success'
             });
-            // 刷新表格
-            this.getUserInfo();
           });
         } else {
           console.log("error submit!!");
@@ -127,7 +161,12 @@ export default {
     }
   },
   created() {
+    this.state = this.getDefaultState();
     this.getUserInfo();
   },
+  beforeDestroy () {
+    this.userForm = null;
+    this.state = null;
+  }
 };
 </script>

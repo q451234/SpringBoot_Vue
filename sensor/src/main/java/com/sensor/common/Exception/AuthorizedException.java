@@ -1,4 +1,4 @@
-package com.sensor.common;
+package com.sensor.common.Exception;
 
 /**
  * 自定义异常类

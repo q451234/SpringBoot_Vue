@@ -1,6 +1,6 @@
 package com.sensor.config;
 
-import com.sensor.common.JwtValidateInterceptor;
+import com.sensor.interceptor.JwtValidateInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;

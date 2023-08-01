@@ -1,9 +1,7 @@
 package com.sensor.controller;
 
-import com.sensor.common.AuthorizedException;
-import com.sensor.common.Constant;
-import com.sensor.common.DataAuthorize;
-import com.sensor.common.Result;
+import com.sensor.common.*;
+import com.sensor.common.Exception.AuthorizedException;
 import com.sensor.service.NavigateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +28,7 @@ public class NavigateController {
     DataAuthorize dataAuthorize;
 
     @ApiOperation("获取过程导航栏")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping("/process")
     public Result<?> getProcessNavigate(HttpServletRequest request){
         List<String> projectIdAuthorizeList = dataAuthorize.getProjectIdAuthorize(request);
@@ -44,6 +43,7 @@ public class NavigateController {
     }
 
     @ApiOperation("获取分布导航栏")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping("/distribution")
     public Result<?> getDistributionNavigate(HttpServletRequest request){
         List<String> projectIdAuthorizeList = dataAuthorize.getProjectIdAuthorize(request);
@@ -58,6 +58,7 @@ public class NavigateController {
     }
 
     @ApiOperation("获取测斜仪导航栏")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping("/inclinometer")
     public Result<?> getInclinometerNavigate(@RequestParam(value = "sensorType") String sensorType,
                                              HttpServletRequest request){

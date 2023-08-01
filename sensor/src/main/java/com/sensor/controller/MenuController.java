@@ -1,5 +1,7 @@
 package com.sensor.controller;
 
+import com.sensor.common.Access;
+import com.sensor.common.AccessLevel;
 import com.sensor.common.Result;
 import com.sensor.entity.Menu;
 import com.sensor.service.MenuService;
@@ -22,6 +24,7 @@ public class MenuController {
     private MenuService menuService;
 
     @ApiOperation("获取所有导航栏")
+    @Access(level = AccessLevel.NORMAL)
     @GetMapping
     public Result<?> getAllMenu(){
         List<Menu> menuList =  menuService.getAllMenu();
