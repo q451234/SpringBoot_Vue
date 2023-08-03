@@ -8,7 +8,7 @@
           prop="username"
           :label-width="formLabelWidth"
         >
-          <el-input v-model="userForm.name" autocomplete="off" :disabled="disabled"></el-input>
+          <el-input v-model="userForm.name" autocomplete="off" :disabled=true></el-input>
         </el-form-item>
         <el-form-item
           label="登录密码"

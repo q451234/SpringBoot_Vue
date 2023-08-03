@@ -303,6 +303,17 @@ export default {
       return res;
     },
     getSensorDataDrawListDistribution(flag = true) {
+      if(this.searchModel.fieldName == "" || this.searchModel.projectName == "" ||
+          this.searchModel.sensorType == "" || this.searchModel.fieldValue == "" ||
+          this.searchModel.dateValue == null || this.searchModel.dateValue.length < 2){
+            this.$message({
+              message:  "请完善查询条件",
+              type: 'error'
+            });
+            this.chart = echarts.init(document.getElementById(this.id));
+            this.chart.clear();
+            return 0;
+      }
       sensorApi.getSensorDataDrawListDistribution(this.searchModel, flag).then((response) => {
           this.sensorDataList = response.data;
 

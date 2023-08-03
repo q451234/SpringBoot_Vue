@@ -253,6 +253,18 @@ export default {
       return res;
     },
     getSensorDataDrawListProcess(flag = true) {
+      if(this.searchModel.fieldValue == null || this.searchModel.fieldValue.length == 0|| 
+         this.searchModel.projectName == "" || this.searchModel.cdName == "" || 
+         this.searchModel.boxName == "" || this.searchModel.dateValue == null || 
+         this.searchModel.dateValue.length < 2){
+            this.$message({
+              message:  "请完善查询条件",
+              type: 'error'
+            });
+            this.chart = echarts.init(document.getElementById(this.id));
+            this.chart.clear();
+            return 0;
+      }
       sensorApi.getSensorDataDrawListProcess(this.searchModel, flag).then((response) => {
           this.sensorDataList = response.data;
           this.initChart();
@@ -274,7 +286,7 @@ export default {
           textStyle: {
             fontWeight: 'normal',
             fontSize: 16,
-            color: '#F1F1F3'
+            color: 'rgb(255,255,255)'
           },
           left: '1%'
         },
@@ -282,7 +294,7 @@ export default {
           trigger: 'axis',
           axisPointer: {
             lineStyle: {
-              color: '#57617B'
+              color: 'rgb(255,255,255)'
             }
           }
         },
@@ -296,7 +308,7 @@ export default {
           right: '4%',
           textStyle: {
             fontSize: 12,
-            color: '#F1F1F3'
+            color: 'rgb(255,255,255)'
           }
         },
         grid: {
@@ -311,7 +323,7 @@ export default {
           boundaryGap: false,
           axisLine: {
             lineStyle: {
-              color: '#57617B'
+              color: 'rgb(255,255,255)'
             }
           },
           data: this.sensorDataList.date
@@ -326,7 +338,7 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: '#57617B'
+              color: 'rgb(255,255,255)'
             }
           },
           axisLabel: {
@@ -337,7 +349,7 @@ export default {
           },
           splitLine: {
             lineStyle: {
-              color: '#57617B'
+              color: 'rgb(255,255,255)'
             }
           }
         }],
