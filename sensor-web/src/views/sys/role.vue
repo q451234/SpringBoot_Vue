@@ -100,7 +100,7 @@
         </el-form-item>
         
         <el-form-item
-          label="权限设置"
+          label="数据权限设置"
           :label-width="formLabelWidth"
         >
           <el-checkbox-group 
@@ -227,6 +227,7 @@ export default {
     },
     clearForm() {
       this.roleForm = {};
+      this.authorized = [];
       this.$refs.roleFormRef.clearValidate();
       this.$refs.menuRef.setCheckedKeys([]);
     },

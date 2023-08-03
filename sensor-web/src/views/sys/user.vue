@@ -100,6 +100,13 @@
         <el-form-item label="联系电话" :label-width="formLabelWidth">
           <el-input v-model="userForm.phone" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item
+          label="电子邮件"
+          prop="email"
+          :label-width="formLabelWidth"
+        >
+          <el-input v-model="userForm.email" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="用户状态" :label-width="formLabelWidth">
           <el-switch
             v-model="userForm.status"
@@ -115,13 +122,6 @@
             :max="1">
             <el-checkbox v-for="role in roleList" :label="role.roleId" :key="role.roleId">{{role.roleDesc}}</el-checkbox>
           </el-checkbox-group>
-        </el-form-item>
-        <el-form-item
-          label="电子邮件"
-          prop="email"
-          :label-width="formLabelWidth"
-        >
-          <el-input v-model="userForm.email" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
