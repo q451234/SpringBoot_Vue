@@ -26,6 +26,8 @@ public class Role implements Serializable {
 
     private String roleDesc;
 
+    private Integer access;
+
     @TableField(exist = false)
     private List<Integer> menuIdList;
 

@@ -10,6 +10,7 @@ import com.sensor.entity.SensorData;
 import com.sensor.mapper.FetchMapper;
 import com.sensor.util.FluxUtil;
 import com.sensor.util.PautaUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 //转移mysql数据到influxdb
 @Slf4j
+@Api(tags = "数据转移接口列表")
 @RestController
 @RequestMapping("/fetch")
 public class FetchController {
@@ -38,7 +40,8 @@ public class FetchController {
 
         InfluxDBClient influxDBClient = FluxUtil.createInfluxClient(bucket);
 
-        System.out.println(sensorDataList.size());
+        int originSize = sensorDataList.size();
+        log.info("原数据大小：" + sensorDataList.size());
         sensorDataList = sensorDataList.stream().filter(sensorData ->
                 sensorData.getSubstand() <= Double.parseDouble(sensorData.getLMax()) &&
                         sensorData.getSubstand() >= Double.parseDouble(sensorData.getLMin()) &&
@@ -48,9 +51,11 @@ public class FetchController {
                         sensorData.getCalculatedata() >= Double.parseDouble(sensorData.getLMin())
 
         ).collect(Collectors.toList());
-        System.out.println(sensorDataList.size());
+
+        int threadSize = sensorDataList.size();
+        log.info("阈值清洗数据：" + (originSize - threadSize));
         PautaUtil.removeException(sensorDataList);
-        System.out.println(sensorDataList.size());
+        log.info("拉伊达准则清洗数据：" + (sensorDataList.size() - threadSize));
         // Write data
         WriteApi writeApi = influxDBClient.makeWriteApi();
 

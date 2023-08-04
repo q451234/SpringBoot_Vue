@@ -7,6 +7,7 @@ import com.sensor.common.Constant;
 import com.sensor.common.Result;
 import com.sensor.entity.Role;
 import com.sensor.service.RoleService;
+import com.sensor.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ import java.util.Map;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserUtil userUtil;
 
     @ApiOperation("获取所有角色信息")
     @Access(level = AccessLevel.MANAGER)
@@ -55,6 +59,7 @@ public class RoleController {
     @PostMapping
     public Result<?> addRole(@RequestBody Role role){
         try{
+            role.setAccess(userUtil.getAccess(role));
             roleService.addRole(role);
         }catch (Exception SQLIntegrityConstraintViolationException){
             log.info("角色名已存在", role);
@@ -68,6 +73,7 @@ public class RoleController {
     @Access(level = AccessLevel.ADMIN)
     @PutMapping
     public Result<?> updateRole(@RequestBody Role role){
+        role.setAccess(userUtil.getAccess(role));
         roleService.updateRole(role);
         return Result.success("修改角色成功");
     }

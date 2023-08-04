@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +55,7 @@ public class AccessInterceptor implements HandlerInterceptor {
     }
 
     public Integer getAuth(User user){
-        return Math.abs(user.getRoleIdList().get(0) - 3);
+        return userUtil.getAuth(user);
     }
 }
 
